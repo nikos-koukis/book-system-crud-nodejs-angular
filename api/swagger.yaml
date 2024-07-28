@@ -46,7 +46,7 @@ paths:
             schema:
               type: object
               properties:
-                username:
+                email:
                   type: string
                 password:
                   type: string
@@ -64,6 +64,39 @@ paths:
           description: User not found
         '401':
           description: Incorrect password
+
+  /authenticate:
+    post:
+      summary: Check user authentication
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Authenticated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+        '401':
+          description: Authentication required
+        '404':
+          description: User not found
+        '403':
+          description: Invalid token
 
   /dashboard:
     get:

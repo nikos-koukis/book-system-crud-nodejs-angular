@@ -8,6 +8,7 @@ npm-debug.log*
 
 # Environment variables
 .env
+credentials.txt
 
 # Build output
 dist

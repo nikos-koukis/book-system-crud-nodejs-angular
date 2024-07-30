@@ -24,7 +24,7 @@ app.use(cors({
 app.use(express.json());
 
 // Swagger UI setup
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Root route
 app.get('/', (req, res) => {
@@ -32,10 +32,10 @@ app.get('/', (req, res) => {
 });
 
 // Define authentication routes
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 
 // Define dashboard route
-app.use('/dashboard', dashboardRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Start the server
 app.listen(PORT, () => {

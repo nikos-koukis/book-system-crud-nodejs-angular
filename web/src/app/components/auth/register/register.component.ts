@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../auth.service';
-import { ValidationService } from '../services/validation.service'; // Import the validation service
+import { AuthService } from '../services/auth.service';
+import { ValidationService } from '../../../utils/validation.service'; // Import the validation service
+import { Router } from '@angular/router'; // Import Router for navigation
 
 @Component({
   selector: 'app-register',
@@ -14,8 +15,9 @@ export class RegisterComponent {
   confirmPassword: string = ''; // New field for confirm password
   role: string = 'user';
   validationErrors: string[] = []; // To hold validation errors
+  serverError: string = ''; // Variable to hold server-side errors
 
-  constructor(private authService: AuthService, private validationService: ValidationService) {}
+  constructor(private authService: AuthService, private validationService: ValidationService, private router: Router) {} // Inject Router
 
   register(): void {
     const user = {
@@ -39,12 +41,25 @@ export class RegisterComponent {
     this.authService.register(user).subscribe(
       response => {
         console.log('Registration successful', response);
-        // Handle successful registration (e.g., navigate to login)
+        // Clear the form fields
+        this.clearFormFields();
+        // Redirect to the login page
+        this.router.navigate(['/login']);
       },
       error => {
         console.error('Registration failed', error);
-        // Handle errors (e.g., show feedback to the user)
+        this.serverError = error.error.message || 'An unexpected error occurred.';
       }
     );
+  }
+
+  private clearFormFields() {
+    this.username = '';
+    this.email = '';
+    this.password = '';
+    this.confirmPassword = '';
+    this.role = 'user'; // Reset to the default role
+    this.validationErrors = []; // Clear any existing validation errors
+    this.serverError = ''; // Clear any server errors
   }
 }

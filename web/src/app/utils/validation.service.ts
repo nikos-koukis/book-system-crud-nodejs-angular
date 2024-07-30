@@ -23,8 +23,7 @@ export class ValidationService {
   }
 
   isPasswordValid(password: string): boolean {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/; // Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number
-    return passwordRegex.test(password);
+    return typeof password === 'string' && password.length > 4;
   }
 
   // Validate the entire user registration form

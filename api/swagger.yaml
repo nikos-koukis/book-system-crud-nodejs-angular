@@ -7,7 +7,7 @@ servers:
   - url: http://localhost:80 # Change to your server URL
 
 paths:
-  /auth/register:
+  /api/auth/register:
     post:
       summary: Register a new user
       tags:
@@ -34,7 +34,7 @@ paths:
         '500':
           description: Internal server error
 
-  /auth/login:
+  /api/auth/login:
     post:
       summary: Login an existing user
       tags:
@@ -65,7 +65,7 @@ paths:
         '401':
           description: Incorrect password
 
-  /authenticate:
+  /api/authenticate:
     post:
       summary: Check user authentication
       tags:
@@ -98,7 +98,7 @@ paths:
         '403':
           description: Invalid token
 
-  /dashboard:
+  /api/dashboard:
     get:
       summary: Get dashboard data
       tags:

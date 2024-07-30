@@ -3,6 +3,7 @@ const cors = require('cors'); // Import the CORS package
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
+const customerRoutes = require('./routes/customers'); // Import the customer routes
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
@@ -36,6 +37,9 @@ app.use('/api/auth', authRoutes);
 
 // Define dashboard route
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/customers', customerRoutes); // Customer routes for CRUD operations
+
+
 
 // Start the server
 app.listen(PORT, () => {

@@ -8,9 +8,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { LoginComponent } from './components/auth/login/login.component';
-import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
-import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
-
+import { UserDashboardComponent } from './components/user/user-dashboard/user-dashboard.component';
+import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
+import { CustomerListComponent } from './components/admin/customers/customer-list/customer-list.component';
+import { CustomerAddComponent } from './components/admin/customers/customer-add/customer-add.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,8 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
     RegisterComponent,
     UserDashboardComponent,
     AdminDashboardComponent,
+    CustomerListComponent,
+    CustomerAddComponent,
   ],
   imports: [
     BrowserModule,

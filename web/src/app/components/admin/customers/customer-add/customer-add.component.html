@@ -1,0 +1,22 @@
+<div class="container mt-5">
+    <h2 class="text-center">Add Customer</h2>
+    <form (ngSubmit)="addCustomer()">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" id="name" class="form-control" [(ngModel)]="name" name="name" required />
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" class="form-control" [(ngModel)]="email" name="email" required />
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">Phone</label>
+        <input type="text" id="phone" class="form-control" [(ngModel)]="phone" name="phone" required />
+      </div>
+      <div *ngIf="serverError" class="alert alert-danger">
+        {{ serverError }}
+      </div>
+      <button type="submit" class="btn btn-primary">Add Customer</button>
+    </form>
+  </div>
+  

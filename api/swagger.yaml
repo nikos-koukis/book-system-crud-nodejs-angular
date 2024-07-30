@@ -127,6 +127,144 @@ paths:
         '401':
           description: Authentication required
 
+  /api/customers:
+    post:
+      summary: Create a new customer
+      tags:
+        - Customers
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+      responses:
+        '201':
+          description: Customer created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customerId:
+                    type: string  # The ID of the created customer
+        '400':
+          description: Invalid request data
+        '403':
+          description: Access denied. Admins only.
+        '500':
+          description: Internal server error
+
+    get:
+      summary: Retrieve all customers for the logged-in admin
+      tags:
+        - Customers
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Customers retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    phone:
+                      type: string
+        '403':
+          description: Access denied. Admins only.
+        '500':
+          description: Internal server error
+
+  /api/customers/{id}:
+    put:
+      summary: Update a customer by ID
+      tags:
+        - Customers
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the customer to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+      responses:
+        '200':
+          description: Customer updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Customer not found
+        '403':
+          description: Access denied. Admins only.
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Delete a customer by ID
+      tags:
+        - Customers
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the customer to delete
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Customer deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Customer not found
+        '403':
+          description: Access denied. Admins only.
+        '500':
+          description: Internal server error
+  
 components:
   securitySchemes:
     bearerAuth:

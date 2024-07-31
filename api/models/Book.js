@@ -13,6 +13,10 @@ const bookSchema = new mongoose.Schema({
   image: {
     type: String, // URL or path for the uploaded image
   },
+  stock: {
+    type: Number,
+    default: 0, // Default stock is 0
+  },
 }, { timestamps: true });
 
 const Book = mongoose.model('Book', bookSchema);

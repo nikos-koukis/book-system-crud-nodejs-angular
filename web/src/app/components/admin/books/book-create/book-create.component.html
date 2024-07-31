@@ -1,0 +1,30 @@
+<div class="container mt-5">
+    <h2 class="text-center">Create Book</h2>
+    <form (ngSubmit)="createBook()">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" id="title" class="form-control" [(ngModel)]="title" name="title" required />
+      </div>
+      <div class="mb-3">
+        <label for="isbn" class="form-label">ISBN</label>
+        <input type="text" id="isbn" class="form-control" [(ngModel)]="isbn" name="isbn" required />
+      </div>
+      <div class="mb-3">
+        <label for="stock" class="form-label">Stock</label>
+        <input type="number" id="stock" class="form-control" [(ngModel)]="stock" name="stock" required />
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Upload Image</label>
+        <input type="file" id="image" class="form-control" (change)="onImageSelected($event)" />
+      </div>
+      <div *ngIf="imagePreview" class="mb-3">
+        <h5>Image Preview:</h5>
+        <img [src]="imagePreview" alt="Preview" class="img-fluid" />
+      </div>
+      <div *ngIf="serverError" class="alert alert-danger">
+        {{ serverError }}
+      </div>
+      <button type="submit" class="btn btn-primary">Create Book</button>
+    </form>
+  </div>
+  

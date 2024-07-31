@@ -8,6 +8,7 @@ const bookRoutes = require('./routes/books'); // Import the book routes
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
+const path = require('path'); // Import path module for serving static files
 
 const app = express();
 const PORT = process.env.PORT || 80;
@@ -24,6 +25,8 @@ app.use(cors({
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
+
+app.use('/assets/uploads', express.static(path.join(__dirname, 'assets', 'uploads')));
 
 // Swagger UI setup
 app.use('/api/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

@@ -39,4 +39,33 @@ export class ApiService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.delete(`${this.apiUrl}/customers/${id}`, { headers });
   }
+
+  getBooks(token: string): Observable<any[]> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any[]>(`${this.apiUrl}/books`, { headers });
+  }
+
+  getBookById(id: string, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/books/${id}`, { headers });
+  }
+
+  updateBook(id: string, book: any, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put(`${this.apiUrl}/books/${id}`, book, { headers });
+  }
+
+  deleteBook(id: string, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete(`${this.apiUrl}/books/${id}`, { headers });
+  }
+
+  createBook(formData: FormData, token: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/books`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
 }

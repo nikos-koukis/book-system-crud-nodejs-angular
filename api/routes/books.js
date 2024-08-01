@@ -43,7 +43,7 @@ router.post('/', authenticate, isAdmin, upload.single('image'), async (req, res)
 });
 
 // Get all books
-router.get('/', authenticate, isAdmin, async (req, res) => {
+router.get('/', authenticate, async (req, res) => {
   try {
     const books = await Book.find(); // Fetch all books from the database
     res.json(books); // Return the list of books

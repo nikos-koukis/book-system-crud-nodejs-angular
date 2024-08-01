@@ -15,6 +15,9 @@ import { CustomerAddComponent } from './components/admin/customers/customer-add/
 import { BookListComponent } from './components/admin/books/book-list/book-list.component';
 import { BookEditComponent } from './components/admin/books/book-edit/book-edit.component';
 import { BookCreateComponent } from './components/admin/books/book-create/book-create.component';
+import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { CartComponent } from './components/user/cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,9 @@ import { BookCreateComponent } from './components/admin/books/book-create/book-c
     BookListComponent,
     BookEditComponent,
     BookCreateComponent,
+    UserLayoutComponent,
+    AdminLayoutComponent,
+    CartComponent,
   ],
   imports: [
     BrowserModule,

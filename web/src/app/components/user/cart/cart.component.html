@@ -1,0 +1,33 @@
+<div class="container mt-5">
+  <h2 class="text-center">Your Cart</h2>
+  <div *ngIf="cartItems.length === 0" class="alert alert-warning">Your cart is empty.</div>
+  
+  <div *ngIf="cartItems.length > 0">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cartItems">
+          <td>{{ item.title }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.price | currency }}</td>
+          <td>{{ item.price * item.quantity | currency }}</td>
+          <td>
+            <button class="btn btn-danger" (click)="removeItem(item.bookId)">Remove</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h4>Total: {{ total | currency }}</h4>
+    <button class="btn btn-success" (click)="clearCart()">Clear Cart</button>
+    <button class="btn btn-primary">Proceed to Checkout</button>
+  </div>
+</div>

@@ -5,14 +5,14 @@
             <ul class="navbar-nav">
                 <!-- Navigation links can go here -->
                 <li class="nav-item"><a class="nav-link" routerLink="/">Books</a></li>
-            </ul>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item" *ngIf="isLoggedIn()">
+                <li class="nav-item">
                     <a class="nav-link" routerLink="/dashboard/cart">
-                        <i class="bi bi-cart"></i> <!-- Cart icon -->
-                        <span *ngIf="cartItemCount" class="badge bg-primary">{{ cartItemCount }}</span> <!-- Cart item count -->
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge bg-danger" *ngIf="getCartCount() > 0">{{ getCartCount() }}</span>
                     </a>
                 </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item" *ngIf="isLoggedIn()">
                     <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
                 </li>

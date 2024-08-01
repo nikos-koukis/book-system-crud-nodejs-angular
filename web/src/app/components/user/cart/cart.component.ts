@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService } from '../../../services/cart.service'; // Import the CartService
+
+interface Book {
+  title: string;
+  isbn: string;
+  price: number;
+  image?: string;
+  stock: number;
+  quantity: number; // Include quantity in the Book interface
+}
 
 @Component({
   selector: 'app-cart',
@@ -7,24 +15,61 @@ import { CartService } from '../../../services/cart.service'; // Import the Cart
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  cartItems: any[] = []; // To hold the cart items
-  total: number = 0; // Total price
-
-  constructor(private cartService: CartService) {}
+  cartItems: Book[] = [];
 
   ngOnInit(): void {
-    this.cartService.items$.subscribe(items => {
-      this.cartItems = items;
-      this.total = this.cartService.getTotal(); // Calculate total when cart items change
+    this.loadCart();
+  }
+
+  loadCart(): void {
+    this.cartItems = JSON.parse(localStorage.getItem('cart') || '[]').map((item: Book) => {
+      return {
+        ...item,
+        quantity: item.quantity || 1 // Restore previous quantity if available, else initialize to 1
+      };
     });
   }
 
-  removeItem(bookId: string): void {
-    this.cartService.removeFromCart(bookId);
+  getTotal(): number {
+    return this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  }
+
+  removeFromCart(index: number): void {
+    this.cartItems.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(this.cartItems));
+  }
+
+  increaseQuantity(book: Book): void {
+    const bookIndex = this.cartItems.findIndex(item => item.isbn === book.isbn);
+    if (bookIndex !== -1 && this.cartItems[bookIndex].quantity < this.cartItems[bookIndex].stock) {
+      this.cartItems[bookIndex].quantity += 1; // Increase quantity
+      localStorage.setItem('cart', JSON.stringify(this.cartItems)); // Update local storage
+    }
+  }
+
+  decreaseQuantity(book: Book): void {
+    const bookIndex = this.cartItems.findIndex(item => item.isbn === book.isbn);
+    if (bookIndex !== -1 && this.cartItems[bookIndex].quantity > 1) {
+      this.cartItems[bookIndex].quantity -= 1; // Decrease quantity
+      localStorage.setItem('cart', JSON.stringify(this.cartItems)); // Update local storage
+    }
   }
 
   clearCart(): void {
-    this.cartService.clearCart(); // Clear all items in the cart
+    // Clear all items from the cart
+    this.cartItems = []; // Clear the array in the component
+    localStorage.removeItem('cart'); // Clear cart in local storage
   }
-  
+
+  completeOrder(): void {
+    if (this.cartItems.length > 0) {
+      // Here you can handle the completion of the order, such as sending the cart to your backend service.
+      alert('Order completed! Thank you for your purchase.');
+      // Clear the cart after completing the order
+      localStorage.removeItem('cart');
+      this.cartItems = []; // Clear current cart in the component too
+    } else {
+      alert('Your cart is empty.');
+    }
+  }
 }

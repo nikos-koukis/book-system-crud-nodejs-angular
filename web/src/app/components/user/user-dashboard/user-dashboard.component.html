@@ -1,20 +1,24 @@
 <div class="container mt-5">
-  <h2 class="text-center">Available Books</h2>
-  <div *ngIf="serverError" class="alert alert-danger">{{ serverError }}</div>
-  <div class="row">
-      <div *ngFor="let book of books" class="col-md-4 mb-4">
-          <div class="card">
-              <img *ngIf="book.image" [src]="book.image" class="card-img-top" alt="{{ book.title }} image">
-              <div class="card-body">
-                  <h5 class="card-title">{{ book.title }}</h5>
-                  <p class="card-text"><strong>ISBN:</strong> {{ book.isbn }}</p>
-                  <p class="card-text"><strong>Stock:</strong> {{ book.stock }}</p>
-                  <button class="btn btn-primary" [disabled]="book.stock === 0" 
-                          (click)="buyBook(book)">
-                      {{ book.stock > 0 ? 'Buy' : 'Out of Stock' }}
-                  </button>
-              </div>
-          </div>
-      </div>
-  </div>
+    <h2 class="text-center">Available Books</h2>
+    <div *ngIf="serverError" class="alert alert-danger">{{ serverError }}</div>
+    <div class="row">
+        <div *ngFor="let book of books" class="col-md-4 mb-4">
+            <div class="card">
+                <img *ngIf="book.image" [src]="book.image" class="card-img-top" alt="{{ book.title }} image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text"><strong>ISBN:</strong> {{ book.isbn }}</p>
+                    <p class="card-text"><strong>Price:</strong> {{ book.price | currency:'EUR' }}</p>
+                    
+                    <ng-container *ngIf="book.stock > 0; else outOfStock">
+                        <button *ngIf="!isInCart(book)" class="btn btn-primary" (click)="addToCart(book)">Add to Cart</button>
+                        <button *ngIf="isInCart(book)" class="btn btn-danger" (click)="removeFromCart(book)">Remove from Cart</button>
+                    </ng-container>
+                    <ng-template #outOfStock>
+                        <span class="text-danger">Out of Stock</span>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,0 +1,11 @@
+.navbar-nav .nav-link {
+    position: relative;
+}
+
+.navbar-nav .badge {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    font-size: 0.75rem;
+    padding: 0.2em 0.5em;
+}

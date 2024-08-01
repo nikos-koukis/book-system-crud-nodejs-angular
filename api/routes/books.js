@@ -28,11 +28,11 @@ const upload = multer({ storage }); // Create multer instance
 
 // Create a new book
 router.post('/', authenticate, isAdmin, upload.single('image'), async (req, res) => {
-  const { title, isbn, stock } = req.body;
+  const { title, isbn, price, stock } = req.body;
   const imagePath = req.file.path; // Get the image path from uploaded file
   try {
     // Create a new book entry
-    const newBook = new Book({ title, isbn, stock, image: imagePath }); // Save the path of the uploaded image
+    const newBook = new Book({ title, isbn, price, stock, image: imagePath }); // Save the path of the uploaded image
     await newBook.save();
 
     res.status(201).json(newBook); // Respond with the created book
@@ -71,12 +71,12 @@ router.get('/:id', authenticate, isAdmin, async (req, res) => {
 // Update a book by ID
 router.put('/:id', authenticate, isAdmin, upload.single('image'), async (req, res) => {
   const { id } = req.params; // Get book ID from URL
-  const { title, isbn, stock } = req.body;
+  const { title, isbn, price, stock } = req.body;
 
   try {
     const updatedBook = await Book.findByIdAndUpdate(
       id,
-      { title, isbn, stock, image: req.file ? req.file.path : undefined }, // Update the book; if there's no new image, keep the old one
+      { title, isbn, price, stock, image: req.file ? req.file.path : undefined }, // Update the book; if there's no new image, keep the old one
       { new: true }
     );
 

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
-import { CartService } from '../../../services/cart.service'; 
 import { Router } from '@angular/router';
 
 interface Book {
   title: string;
   isbn: string;
+  price: number;
   image?: string; 
   stock: number;
 }
@@ -19,7 +19,7 @@ export class UserDashboardComponent implements OnInit {
   books: Book[] = [];
   serverError: string = '';
 
-  constructor(private apiService: ApiService, private cartService: CartService, private router: Router) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   private apiUrl = 'http://localhost:80';
 
@@ -32,11 +32,8 @@ export class UserDashboardComponent implements OnInit {
     if (token) {
       this.apiService.getBooks(token).subscribe(
         response => {
+          console.log('Books fetched successfully', response);
           this.books = response.map(book => {
-            const cookieBook = this.cartService.getCartItem(book.isbn); // Get cart item info from CartService
-            if (cookieBook) {
-              book.stock -= cookieBook.quantity; // Reduce stock by the quantity in cart
-            }
             return {
               ...book,
               image: `${this.apiUrl}/${book.image}`
@@ -54,13 +51,20 @@ export class UserDashboardComponent implements OnInit {
     }
   }
 
-  buyBook(book: Book): void {
-    if (book.stock > 0) {
-      this.cartService.addToCart(book);
-      book.stock -= 1; // Decrement the stock after adding to the cart
-      alert(`You have added ${book.title} to your cart.`);
-    } else {
-      alert(`Sorry, ${book.title} is out of stock!`);
-    }
+  addToCart(book: Book): void {
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    cart.push(book);
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  removeFromCart(book: Book): void {
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    cart = cart.filter((item: Book) => item.isbn !== book.isbn); // assuming isbn is unique
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  isInCart(book: Book): boolean {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    return cart.some((item: Book) => item.isbn === book.isbn);
   }
 }

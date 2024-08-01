@@ -10,6 +10,10 @@ const bookSchema = new mongoose.Schema({
     required: true,
     unique: true, // Ensure ISBN is unique
   },
+  price: {
+    type: Number,
+    required: true,
+  },
   image: {
     type: String, // URL or path for the uploaded image
   },

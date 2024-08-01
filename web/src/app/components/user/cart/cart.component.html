@@ -29,12 +29,18 @@
                     </div>
                 </td>
                 <td>
-                    <button class="btn btn-danger btn-sm" (click)="clearCart()" [disabled]="cartItems.length === 0">Clear Cart</button>
                     <button class="btn btn-danger btn-sm" (click)="removeFromCart(i)">Remove</button>
                 </td>
             </tr>
         </tbody>
     </table>
+
+    <!-- Move the Clear Cart button here below the table -->
+    <div class="row mt-2">
+        <div class="col-md-12 text-start">
+            <button class="btn btn-danger btn-md" (click)="clearCart()" [disabled]="cartItems.length === 0">Clear Cart</button>
+        </div>
+    </div>
 
     <div class="row mt-4">
         <div class="col-md-12">

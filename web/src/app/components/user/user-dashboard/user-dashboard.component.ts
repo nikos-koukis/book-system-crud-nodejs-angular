@@ -32,7 +32,6 @@ export class UserDashboardComponent implements OnInit {
     if (token) {
       this.apiService.getBooks(token).subscribe(
         response => {
-          console.log('Books fetched successfully', response);
           this.books = response.map(book => {
             return {
               ...book,

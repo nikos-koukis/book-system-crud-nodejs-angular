@@ -35,7 +35,6 @@
         </tbody>
     </table>
 
-    <!-- Move the Clear Cart button here below the table -->
     <div class="row mt-2">
         <div class="col-md-12 text-start">
             <button class="btn btn-danger btn-md" (click)="clearCart()" [disabled]="cartItems.length === 0">Clear Cart</button>
@@ -45,7 +44,33 @@
     <div class="row mt-4">
         <div class="col-md-12">
             <h4 class="text-end">Subtotal: {{ getTotal() | currency:'EUR' }}</h4>
-            <button class="btn btn-success mt-3 float-end" (click)="completeOrder()" [disabled]="cartItems.length === 0">Complete Order</button>
+            <button type="button" class="btn btn-success mt-3 float-end" data-toggle="modal" data-target="#userDetailsModal" [disabled]="cartItems.length === 0">Complete Order</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="userDetailsModal" tabindex="-1" role="dialog" aria-labelledby="userDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userDetailsModalLabel">User Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="useremail">Email</label>
+                        <input type="email" class="form-control" id="useremail" [(ngModel)]="userDetails.email" name="useremail" required readonly>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="submitOrder()">Submit Order</button>
+            </div>
         </div>
     </div>
 </div>

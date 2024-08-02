@@ -11,13 +11,14 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { UserDashboardComponent } from './components/user/user-dashboard/user-dashboard.component';
 import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
 import { CustomerListComponent } from './components/admin/customers/customer-list/customer-list.component';
-import { CustomerAddComponent } from './components/admin/customers/customer-add/customer-add.component';
 import { BookListComponent } from './components/admin/books/book-list/book-list.component';
 import { BookEditComponent } from './components/admin/books/book-edit/book-edit.component';
 import { BookCreateComponent } from './components/admin/books/book-create/book-create.component';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { CartComponent } from './components/user/cart/cart.component';
+import { OrderListComponent } from './components/admin/orders/order-list/order-list.component';
+import { OrderEditComponent } from './components/admin/orders/order-edit/order-edit.component';
 
 @NgModule({
   declarations: [
@@ -27,13 +28,14 @@ import { CartComponent } from './components/user/cart/cart.component';
     UserDashboardComponent,
     AdminDashboardComponent,
     CustomerListComponent,
-    CustomerAddComponent,
     BookListComponent,
     BookEditComponent,
     BookCreateComponent,
     UserLayoutComponent,
     AdminLayoutComponent,
     CartComponent,
+    OrderListComponent,
+    OrderEditComponent,
   ],
   imports: [
     BrowserModule,

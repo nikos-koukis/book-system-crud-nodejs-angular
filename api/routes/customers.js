@@ -11,20 +11,6 @@ const isAdmin = (req, res, next) => {
     return res.status(403).json({ message: 'Access denied. Admins only.' });
 };
 
-// Create a new customer (admin only)
-router.post('/', authenticate, isAdmin, async (req, res) => {
-    const { name, email, phone } = req.body;
-    
-    try {
-        const newCustomer = new Customer({ name, email, phone, user: req.user._id });
-        await newCustomer.save();
-        res.status(201).json(newCustomer); // Respond with the created customer
-    } catch (error) {
-        console.error('Error creating customer:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
-
 // Get all customers for the admin (based on user's role)
 router.get('/', authenticate, isAdmin, async (req, res) => {
     try {

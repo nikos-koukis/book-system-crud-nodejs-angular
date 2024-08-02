@@ -37,11 +37,6 @@ export class CustomerListComponent implements OnInit {
     }
   }
 
-  // Add Customer Method
-  addCustomer(): void {
-    this.router.navigate(['/admin/customers/new']); // Adjust the path to include /admin
-  }
-
   // Open the edit form for a customer
   openEditCustomerModal(customer: any): void {
     this.editingCustomerId = customer._id; // Set the customer ID for editing

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,12 +21,6 @@ export class ApiService {
   getCustomerById(id: string, token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<any>(`${this.apiUrl}/customers/${id}`, { headers });
-  }
-
-  // Method to create a new customer
-  addCustomer(customer: any, token: string): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post(`${this.apiUrl}/customers`, customer, { headers });
   }
 
   // Method to update a customer
@@ -71,6 +66,16 @@ export class ApiService {
   submitOrder(order: any, token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.post(`${this.apiUrl}/order`, order, { headers });
+  }
+
+  getOrders(token: string): Observable<any> { // Specify return type
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/order`, { headers });
+  }
+
+  deleteOrder(orderId: string, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete(`${this.apiUrl}/order/${orderId}`, { headers });
   }
 
 }

@@ -1,12 +1,15 @@
 <div class="container mt-5">
-  <h2 class="text-center">Customer List</h2>
+  <h2 class="text-center font-weight-light">Customer List</h2>
   <div *ngIf="serverError" class="alert alert-danger">
     {{ serverError }}
   </div>
-  <div class="text-end mb-3">
-    <button (click)="addCustomer()" class="btn btn-primary">Add Customer</button>  <!-- Ensure addCustomer method is called -->
+
+  <!-- Check if there are no customers -->
+  <div *ngIf="customers.length === 0" class="alert alert-info text-center mt-5">
+    No customers available.
   </div>
-  <table class="table table-striped">
+
+  <table class="table table-striped" *ngIf="customers.length > 0">
     <thead>
       <tr>
         <th>Name</th>
@@ -21,12 +24,12 @@
         <td *ngIf="editingCustomerId === customer._id">
           <input type="text" [(ngModel)]="updatedCustomer.name" class="form-control" required />
         </td>
-        
+
         <td *ngIf="editingCustomerId !== customer._id">{{ customer.email }}</td>
         <td *ngIf="editingCustomerId === customer._id">
           <input type="email" [(ngModel)]="updatedCustomer.email" class="form-control" required />
         </td>
-        
+
         <td *ngIf="editingCustomerId !== customer._id">{{ customer.phone }}</td>
         <td *ngIf="editingCustomerId === customer._id">
           <input type="text" [(ngModel)]="updatedCustomer.phone" class="form-control" required />
@@ -34,7 +37,7 @@
 
         <td>
           <ng-container *ngIf="editingCustomerId !== customer._id">
-            <button (click)="openEditCustomerModal(customer)" class="btn btn-warning">Edit</button>  <!-- Call the edit function -->
+            <button (click)="openEditCustomerModal(customer)" class="btn btn-warning">Edit</button>
             <button class="btn btn-danger" (click)="deleteCustomer(customer._id)">Delete</button>
           </ng-container>
           <ng-container *ngIf="editingCustomerId === customer._id">

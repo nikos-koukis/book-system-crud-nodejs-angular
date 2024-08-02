@@ -44,7 +44,7 @@ export class BookListComponent implements OnInit {
 
   // Method to navigate to the edit page for a specific book
   editBook(bookId: string): void {
-    this.router.navigate([`admin/books/edit/${bookId}`]);
+    this.router.navigate([`admin/books/${bookId}`]);
   }
 
   deleteBook(bookId: string): void {

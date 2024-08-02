@@ -13,7 +13,7 @@ const isAdmin = (req, res, next) => {
     return res.status(403).json({ message: 'Access denied. Admins only.' });
 };
 
-router.get('/', authenticate, async (req, res) => {
+router.get('/', authenticate, isAdmin, async (req, res) => {
     try {
         const orders = await Order.find().populate('user.id').populate('books.id');
 
@@ -144,6 +144,47 @@ router.put('/:orderId/status', authenticate, isAdmin, async (req, res) => {
         res.status(200).json({ message: 'Order status updated successfully', order });
     } catch (error) {
         res.status(500).json({ error: 'Error updating order status', details: error.message });
+    }
+});
+
+router.get('/:orderId', authenticate, async (req, res) => {
+    const { orderId } = req.params;
+
+    try {
+        const order = await Order.findById(orderId)
+            .populate('user.id')
+            .populate('books.id');
+
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        res.status(200).json({ order });
+    } catch (error) {
+        res.status(500).json({ error: 'Error retrieving order', details: error.message });
+    }
+});
+
+router.delete('/:orderId', authenticate, isAdmin, async (req, res) => {
+    const { orderId } = req.params;
+
+    try {
+        const order = await Order.findById(orderId);
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        // Update stock for each book in the order
+        for (const book of order.books) {
+            await Book.findByIdAndUpdate(book.id, {
+                $inc: { stock: book.quantity }
+            });
+        }
+
+        await Order.findByIdAndDelete(orderId);
+        res.status(200).json({ message: 'Order deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error deleting order', details: error.message });
     }
 });
 

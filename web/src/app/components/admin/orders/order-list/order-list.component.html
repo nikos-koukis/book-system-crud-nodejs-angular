@@ -1,0 +1,42 @@
+<div class="container mt-5">
+    <h2 class="text-center font-weight-light">Order List</h2>
+
+    <div *ngIf="serverError" class="alert alert-danger">
+        {{ serverError }}
+    </div>
+
+    <div *ngIf="!loading && orders.length === 0" class="alert alert-info text-center mt-5">
+        No Orders found.
+      </div>
+
+
+    <div *ngIf="loading" class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <table class="table table-striped mt-5" *ngIf="!loading && orders.length > 0">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Email</th>
+                <th scope="col">Status</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Actions</th> <!-- New Actions Column -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let order of orders; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ order.user.id.email }}</td>
+                <td [ngClass]="{'highlight-pending': order.status === 'Pending'}">{{ order.status }}</td>
+                <td>{{ order.createdAt | date:'short' }}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm me-2" (click)="editOrder(order._id)">Edit</button>
+                    <button class="btn btn-danger btn-sm" (click)="deleteOrder(order._id)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

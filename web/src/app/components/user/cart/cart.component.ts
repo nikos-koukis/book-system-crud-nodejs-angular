@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/services/auth.service';
-
+import { ApiService } from 'src/app/services/api.service';
+import { Router } from '@angular/router';
 interface Book {
+    _id?: string;
     title: string;
     isbn: string;
     price: number;
@@ -19,7 +21,7 @@ export class CartComponent implements OnInit {
     cartItems: Book[] = [];
     userDetails: { email: string;} = { email: ''};
 
-    constructor(private authService: AuthService) {}
+    constructor(private authService: AuthService, private apiService: ApiService, private router: Router) {}
 
     ngOnInit(): void {
         this.loadCart();
@@ -81,12 +83,42 @@ export class CartComponent implements OnInit {
   }
 
     submitOrder(): void {
-        if (this.userDetails.email) {
-            localStorage.removeItem('cart');
-            this.cartItems = [];
-            window.location.reload();
-        } else {
+        if (this.cartItems.length === 0 || !this.userDetails.email) {
             alert('Please fill in all details before submitting the order.');
+            return;
+        }
+        const token = localStorage.getItem('token');
+        if (token) {
+            this.authService.getDashboard(token).subscribe(
+                response => {
+                    const userId = response.user._id;
+                    const order = {
+                        userId: userId,
+                        books: this.cartItems.map(item => ({
+                            bookId: item._id, // Use bookId that corresponds to the API request
+                            quantity: item.quantity // Pass the quantity
+                        }))
+                    };
+                    if(order.books.length === 0) {
+                        alert('Please add books to the cart before submitting the order.');
+                        return;
+                    }
+                    this.apiService.submitOrder(order, token).subscribe(
+                        response => {
+                            localStorage.removeItem('cart');
+                            this.cartItems = [];
+                            this.router.navigate(['/dashboard']);
+                        },
+                        error => {
+                            console.error('Failed to submit order', error);
+                        }
+                    );
+                },
+                error => {
+                    console.error('Failed to fetch user details', error);
+                    return;
+                }
+            );
         }
     }
 }

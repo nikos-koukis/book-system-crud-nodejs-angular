@@ -68,4 +68,9 @@ export class ApiService {
     });
   }
 
+  submitOrder(order: any, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(`${this.apiUrl}/order`, order, { headers });
+  }
+
 }

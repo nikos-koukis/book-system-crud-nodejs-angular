@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../../services/api.service';
-
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-book-edit',
@@ -12,6 +12,7 @@ export class BookEditComponent implements OnInit {
   bookId: string = '';
   title: string = '';
   isbn: string = '';
+  price: number = 0;
   stock: number = 0;
   image: File | null = null; // Property to hold the uploaded image file
   imagePreview: string | null = null; // Property for image preview
@@ -19,7 +20,7 @@ export class BookEditComponent implements OnInit {
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router) {}
 
-  private apiUrl = 'http://localhost:80';
+  private apiUrl = environment.apiUrl;
 
   ngOnInit(): void {
     this.bookId = this.route.snapshot.paramMap.get('id')!; // Get the ID from the route parameters
@@ -33,6 +34,7 @@ export class BookEditComponent implements OnInit {
         response => {
           this.title = response.title; // Set the title based on the response
           this.isbn = response.isbn; // Set the ISBN based on the response
+          this.price = response.price; // Set the ISBN based on the response
           this.stock = response.stock; // Set the ISBN based on the response
           this.imagePreview = `${this.apiUrl}/${response.image}`; // Set the preview image path if available
           
@@ -68,6 +70,7 @@ export class BookEditComponent implements OnInit {
     const formData = new FormData(); // Create a FormData object to handle file upload
     formData.append('title', updatedBook.title); // Add title to FormData
     formData.append('isbn', updatedBook.isbn); // Add ISBN to FormData
+    formData.append('price', this.price.toString()); // Add price to FormData
     formData.append('stock', updatedBook.stock.toString()); // Add stock to FormData
 
     // Only append the image if it exists

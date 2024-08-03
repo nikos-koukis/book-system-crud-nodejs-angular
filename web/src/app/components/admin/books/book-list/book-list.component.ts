@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
-
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-book-list',
   templateUrl: './book-list.component.html',
@@ -13,7 +13,7 @@ export class BookListComponent implements OnInit {
 
   constructor(private apiService: ApiService, private router: Router) {}
 
-  private apiUrl = 'http://localhost:80';
+  private apiUrl = environment.apiUrl;
 
   ngOnInit(): void {
     this.getBooks();
@@ -62,5 +62,9 @@ export class BookListComponent implements OnInit {
       this.serverError = 'User is not authenticated.';
       this.router.navigate(['/login']);
     }
+  }
+
+  createNewBook(): void {
+    this.router.navigate(['/admin/book/add']);
   }
 }

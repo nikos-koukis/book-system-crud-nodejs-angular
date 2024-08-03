@@ -9,12 +9,12 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Traffic</h5>
-                      <span class="h2 font-weight-bold mb-0">350,897</span>
+                      <h5 class="card-title text-uppercase text-muted mb-0">Total Customers</h5>
+                      <span class="h2 font-weight-bold mb-0">{{ totalCustomers }}</span>
                     </div>
                     <div class="col-auto">
-                      <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
-                        <i class="fas fa-chart-bar"></i>
+                      <div class="icon icon-shape-custom  bg-danger text-white rounded-circle shadow">
+                        <i class="fas fa-users"></i> <!-- Updated icon for customers -->
                       </div>
                     </div>
                   </div>
@@ -26,18 +26,55 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">New users</h5>
-                      <span class="h2 font-weight-bold mb-0">2,356</span>
+                      <h5 class="card-title text-uppercase text-muted mb-0">Total Books</h5>
+                      <span class="h2 font-weight-bold mb-0">{{ totalBooks }}</span>
                     </div>
                     <div class="col-auto">
-                      <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-                        <i class="fas fa-chart-pie"></i>
+                      <div class="icon icon-shape-custom  bg-warning text-white rounded-circle shadow">
+                        <i class="fas fa-book"></i> <!-- Updated icon for books -->
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Total Orders</h5>
+                      <span class="h2 font-weight-bold mb-0">{{ totalOrders }}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape-custom bg-success text-white rounded-circle shadow">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">New Orders</h5>
+                      <span class="h2 font-weight-bold mb-0">{{ pendingOrders }}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape-custom  bg-success text-white rounded-circle shadow">
+                        <i class="fas fa-shopping-cart"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="serverError" class="alert alert-danger">
+            {{ serverError }}
           </div>
         </div>
       </div>

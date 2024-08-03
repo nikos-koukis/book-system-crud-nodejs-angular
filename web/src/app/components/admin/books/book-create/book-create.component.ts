@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../../services/api.service';
-
 @Component({
   selector: 'app-book-create',
   templateUrl: './book-create.component.html',
@@ -10,14 +9,13 @@ import { ApiService } from '../../../../services/api.service';
 export class BookCreateComponent implements OnInit {
   title: string = '';
   isbn: string = '';
+  price: number = 0;
   stock: number = 0;
   image: File | null = null; // Property to hold the uploaded image file
   imagePreview: string | null = null; // Property for image preview
   serverError: string = '';
 
   constructor(private apiService: ApiService, private router: Router) {}
-
-  private apiUrl = 'http://localhost:80';
 
   ngOnInit(): void {
     // Any initialization logic can be added here if necessary
@@ -37,13 +35,14 @@ export class BookCreateComponent implements OnInit {
       title: this.title,
       isbn: this.isbn,
       stock: this.stock,
-      // Remove image from here; it'll be handled in FormData
+      price : this.price
     };
 
     const token = localStorage.getItem('token'); // Retrieve the token
     const formData = new FormData(); // Create a FormData object to handle file upload
     formData.append('title', newBook.title); // Add title to FormData
     formData.append('isbn', newBook.isbn); // Add ISBN to FormData
+    formData.append('price', newBook.price.toString()); // Add price to FormData
     formData.append('stock', newBook.stock.toString()); // Add stock to FormData
 
     // Only append the image if it exists

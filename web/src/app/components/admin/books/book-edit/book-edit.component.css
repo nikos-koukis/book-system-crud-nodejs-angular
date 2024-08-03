@@ -1,0 +1,5 @@
+.small-image-preview {
+    max-width: 500px; /* Set maximum width */
+    max-height: 500px; /* Set maximum height */
+    object-fit: cover; /* Ensure the aspect ratio is maintained */
+}

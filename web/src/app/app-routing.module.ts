@@ -24,14 +24,12 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] }, // No guard needed for login
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] }, // No guard needed for login
-  //{ path: 'dashboard', component: UserDashboardComponent, canActivate: [AuthGuard] }, // User Dashboard protected
 
   {
     path: 'dashboard',
     component: UserLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      // User dashboard child routes
       { path: '', component: UserDashboardComponent }, // Default user dashboard
       { path: 'cart', component: CartComponent },
     ]
@@ -46,7 +44,7 @@ const routes: Routes = [
       { path: 'customers', component: CustomerListComponent },
       { path: 'books', component: BookListComponent },
       { path: 'books/:id', component: BookEditComponent, canActivate: [BookExistsGuard] },
-      { path: 'books/add', component: BookCreateComponent },
+      { path: 'book/add', component: BookCreateComponent },
       { path: 'orders', component: OrderListComponent },
       { path: 'order/:id', component: OrderEditComponent },
     ]

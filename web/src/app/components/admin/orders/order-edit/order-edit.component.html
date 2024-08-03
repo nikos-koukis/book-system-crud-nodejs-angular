@@ -31,7 +31,7 @@
                     <div class="flex-grow-1">
                         <h5 class="card-title">{{ book.id.title }}</h5>
                         <p class="card-text"><strong>ISBN:</strong> {{ book.id.isbn }}</p>
-                        <p class="card-text"><strong>Price:</strong> ${{ book.id.price.toFixed(2) }}</p>
+                        <p class="card-text"><strong>Price:</strong> {{ book.id.price.toFixed(2) | currency:'EUR' }}</p>
                         <p class="card-text"><strong>Quantity:</strong> {{ book.quantity }}</p>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
         <hr class="my-4"> 
 
         <h4>Final Price</h4>
-        <p class="h5">Total: ${{ getFinalPrice() | number: '1.2-2' }}</p>
+        <p class="h5">Total: {{ getFinalPrice() | number: '1.2-2' | currency:'EUR' }}</p>
         <hr class="my-4"> 
 
         <h4>Order Details</h4>

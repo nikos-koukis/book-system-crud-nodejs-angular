@@ -1,5 +1,5 @@
-<div class="container mt-5">
-    <h2 class="text-center">Create Book</h2>
+<div class="container m-5">
+    <h2 class="text-center font-weight-light">Create Book</h2>
     <form (ngSubmit)="createBook()">
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
@@ -8,6 +8,10 @@
       <div class="mb-3">
         <label for="isbn" class="form-label">ISBN</label>
         <input type="text" id="isbn" class="form-control" [(ngModel)]="isbn" name="isbn" required />
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">ISBN</label>
+        <input type="text" id="price" class="form-control" [(ngModel)]="price" name="price" required />
       </div>
       <div class="mb-3">
         <label for="stock" class="form-label">Stock</label>

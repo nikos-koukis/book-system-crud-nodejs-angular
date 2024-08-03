@@ -6,6 +6,7 @@ const dashboardRoutes = require('./routes/dashboard');
 const customerRoutes = require('./routes/customers'); // Import the customer routes
 const bookRoutes = require('./routes/books'); // Import the book routes
 const orderRoutes = require('./routes/order'); // Import the order routes
+const statisticsRoutes = require('./routes/statistics'); // Import the statistics routes
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
@@ -45,6 +46,7 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/order', orderRoutes);
+app.use('/api/statistics', statisticsRoutes);
 
 
 

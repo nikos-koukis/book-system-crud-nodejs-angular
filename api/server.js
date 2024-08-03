@@ -26,7 +26,7 @@ const PORT = process.env.PORT || 80;
 // }));
 
 // // Middleware to parse JSON request bodies
-// app.use(express.json());
+app.use(express.json());
 
 // app.use('/assets/uploads', express.static(path.join(__dirname, 'assets', 'uploads')));
 

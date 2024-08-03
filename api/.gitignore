@@ -13,3 +13,5 @@ credentials.txt
 # Build output
 dist
 build
+
+.vercel

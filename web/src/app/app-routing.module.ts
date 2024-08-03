@@ -15,6 +15,7 @@ import { OrderEditComponent } from './components/admin/orders/order-edit/order-e
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
+import {MyOrdersComponent} from './components/user/my-orders/my-orders.component';
 
 import { AuthGuard } from './components/auth/guards/auth.guard';
 import { NoAuthGuard } from './components/auth/guards/no-auth.guard';
@@ -32,6 +33,7 @@ const routes: Routes = [
     children: [
       { path: '', component: UserDashboardComponent }, // Default user dashboard
       { path: 'cart', component: CartComponent },
+      { path: 'myorders', component: MyOrdersComponent },
     ]
   },
 

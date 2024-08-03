@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/services/auth.service';
 import { ApiService } from 'src/app/services/api.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../../../utils/toast.service';
 interface Book {
     _id?: string;
     title: string;
@@ -19,9 +20,9 @@ interface Book {
 })
 export class CartComponent implements OnInit {
     cartItems: Book[] = [];
-    userDetails: { email: string;} = { email: ''};
+    userDetails: { email: string; } = { email: '' };
 
-    constructor(private authService: AuthService, private apiService: ApiService, private router: Router) {}
+    constructor(private authService: AuthService, private apiService: ApiService, private router: Router, private toastService: ToastService) { }
 
     ngOnInit(): void {
         this.loadCart();
@@ -42,8 +43,13 @@ export class CartComponent implements OnInit {
     }
 
     removeFromCart(index: number): void {
+        const bookTitle = this.cartItems[index].title;
         this.cartItems.splice(index, 1);
         localStorage.setItem('cart', JSON.stringify(this.cartItems));
+
+        setTimeout(() => {
+            this.toastService.showToast(`Book "${bookTitle}" removed from cart`, 'success');
+        }, 150);
     }
 
     increaseQuantity(book: Book): void {
@@ -69,17 +75,17 @@ export class CartComponent implements OnInit {
 
 
     getUserDetails(): void {
-      const token = localStorage.getItem('token');
-      if (token) {
-          this.authService.getDashboard(token).subscribe(
-              response => {
-                  this.userDetails.email = response.user.email; 
-              },
-              error => {
-              }
-          );
-      }
-  }
+        const token = localStorage.getItem('token');
+        if (token) {
+            this.authService.getDashboard(token).subscribe(
+                response => {
+                    this.userDetails.email = response.user.email;
+                },
+                error => {
+                }
+            );
+        }
+    }
 
     submitOrder(): void {
         if (this.cartItems.length === 0 || !this.userDetails.email) {
@@ -98,7 +104,7 @@ export class CartComponent implements OnInit {
                             quantity: item.quantity // Pass the quantity
                         }))
                     };
-                    if(order.books.length === 0) {
+                    if (order.books.length === 0) {
                         alert('Please add books to the cart before submitting the order.');
                         return;
                     }
@@ -106,6 +112,10 @@ export class CartComponent implements OnInit {
                         response => {
                             localStorage.removeItem('cart');
                             this.cartItems = [];
+
+                            setTimeout(() => {
+                                this.toastService.showToast('Order submitted successfully', 'success');
+                            }, 150);
                             this.router.navigate(['/dashboard']);
                         },
                         error => {

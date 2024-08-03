@@ -1,0 +1,14 @@
+
+.highlight-pending {
+    background-color: #ffeb3b; /* Yellow or any color for Pending */
+}
+
+.highlight-completed {
+    background-color: #4caf50; /* Green */
+    color: white; /* White text for better contrast */
+}
+
+.highlight-cancelled {
+    background-color: #f44336; /* Red */
+    color: white; /* White text for better contrast */
+}

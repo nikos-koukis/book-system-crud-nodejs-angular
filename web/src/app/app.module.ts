@@ -20,6 +20,7 @@ import { CartComponent } from './components/user/cart/cart.component';
 import { OrderListComponent } from './components/admin/orders/order-list/order-list.component';
 import { OrderEditComponent } from './components/admin/orders/order-edit/order-edit.component';
 import { ToastComponent } from './components/toast/toast.component';
+import { MyOrdersComponent } from './components/user/my-orders/my-orders.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ToastComponent } from './components/toast/toast.component';
     OrderListComponent,
     OrderEditComponent,
     ToastComponent,
+    MyOrdersComponent,
   ],
   imports: [
     BrowserModule,

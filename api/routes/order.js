@@ -158,6 +158,7 @@ router.put('/:orderId/status', authenticate, isAdmin, async (req, res) => {
         res.status(500).json({ error: 'Error updating order status', details: error.message });
     }
 });
+
 router.get('/:orderId', authenticate, async (req, res) => {
     const { orderId } = req.params;
 
@@ -196,6 +197,27 @@ router.delete('/:orderId', authenticate, isAdmin, async (req, res) => {
         res.status(200).json({ message: 'Order deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Error deleting order', details: error.message });
+    }
+});
+
+router.get('/orders/:userId', authenticate, async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        // Find all orders associated with the specified userId
+        const orders = await Order.find({ 'user.id': userId })
+            .populate('user.id')
+            .populate('books.id');
+
+        // Check if any orders are found
+        if (orders.length === 0) {
+            return res.status(404).json({ message: 'No orders found for this user.' });
+        }
+
+        // Respond with the list of orders
+        res.status(200).json({ orders });
+    } catch (error) {
+        res.status(500).json({ error: 'Error retrieving orders', details: error.message });
     }
 });
 

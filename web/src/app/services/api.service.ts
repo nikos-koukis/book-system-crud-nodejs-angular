@@ -94,4 +94,10 @@ export class ApiService {
     return this.http.get<any>(`${this.apiUrl}/statistics`, { headers });
   }
 
+
+  getOrdersByUser(token: string, userID: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/order/orders/${userID}`, { headers });
+  }
+
 }

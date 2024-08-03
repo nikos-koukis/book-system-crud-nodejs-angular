@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../../../utils/toast.service';
 import { environment } from 'src/environments/environment';
 interface Book {
   title: string;
@@ -19,7 +20,7 @@ export class UserDashboardComponent implements OnInit {
   books: Book[] = [];
   serverError: string = '';
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService, private router: Router, private toastService: ToastService) {}
 
   private apiUrl = environment.apiUrl;
 
@@ -53,12 +54,18 @@ export class UserDashboardComponent implements OnInit {
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
     cart.push(book);
     localStorage.setItem('cart', JSON.stringify(cart));
-  }
+    setTimeout(() => {
+      this.toastService.showToast(`Book "${book.title}" added to cart`, 'success');
+    }, 150);
+}
 
   removeFromCart(book: Book): void {
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    cart = cart.filter((item: Book) => item.isbn !== book.isbn); // assuming isbn is unique
+    cart = cart.filter((item: Book) => item.isbn !== book.isbn);
     localStorage.setItem('cart', JSON.stringify(cart));
+    setTimeout(() => {
+      this.toastService.showToast(`Book "${book.title}" removed from cart`, 'success');
+    }, 150);
   }
 
   isInCart(book: Book): boolean {

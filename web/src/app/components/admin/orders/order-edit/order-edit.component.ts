@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../../services/api.service';
-import { environment } from 'src/environments/environment';
+import { ToastService } from '../../../../utils/toast.service';
+
 interface Book {
     id: {
         _id: string;
@@ -55,9 +56,9 @@ export class OrderEditComponent implements OnInit {
     loading: boolean = true;
     selectedStatus: string = ''; // Property to hold the user-selected status
 
-    private apiUrl = environment.apiUrl;
+    private apiUrl = 'http://localhost:80';
 
-    constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) {}
+    constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute, private toastService: ToastService) {}
 
     ngOnInit(): void {
         const orderId = this.route.snapshot.paramMap.get('id');
@@ -117,10 +118,15 @@ export class OrderEditComponent implements OnInit {
         if (token) {
             this.apiService.updateOrder(this.order._id, { status: this.selectedStatus }, token).subscribe(
                 () => {
+                    setTimeout(() => {
+                        this.toastService.showToast('Status updated successfully!', 'success'); // Show success toast
+                      }, 150);
                     this.router.navigate(['/admin/orders']);
                 },
                 error => {
-                    this.serverError = error.error.message || 'An unexpected error occurred.';
+                    setTimeout(() => {
+                        this.toastService.showToast('Status not updated successfully!', 'error'); // Show success toast
+                      }, 150);
                 }
             );
         }

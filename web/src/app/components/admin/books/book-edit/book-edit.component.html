@@ -11,11 +11,11 @@
     </div>
     <div class="mb-3">
       <label for="price" class="form-label">Price</label>
-      <input type="text" id="price" class="form-control" [(ngModel)]="price" name="price" required />
+      <input type="number" id="price" class="form-control" [(ngModel)]="price" name="price" required />
     </div>
     <div class="mb-3">
       <label for="stock" class="form-label">Stock</label>
-      <input type="text" id="stock" class="form-control" [(ngModel)]="stock" name="stock" required />
+      <input type="number" id="stock" class="form-control" [(ngModel)]="stock" name="stock" required />
     </div>
     <div class="mb-3">
       <label for="image" class="form-label">Upload Image</label>
@@ -30,4 +30,5 @@
     </div>
     <button type="submit" class="btn btn-primary">Update Book</button>
   </form>
+  <app-toast></app-toast>
 </div>

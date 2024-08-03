@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../../../../utils/toast.service';
 
 // Interfaces to define the structure of data being used
 interface Book {
@@ -38,7 +39,7 @@ export class OrderListComponent implements OnInit {
   serverError: string | null = null; // For error handling
   loading: boolean = true; // To track loading state
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService, private router: Router, private toastService: ToastService) {}
 
   ngOnInit(): void {
     this.getOrders();
@@ -73,10 +74,16 @@ export class OrderListComponent implements OnInit {
     if(token) {
       this.apiService.deleteOrder(orderId, token).subscribe(
         () => {
-          this.orders = this.orders.filter(order => order._id !== orderId);
+          setTimeout(() => {
+            this.orders = this.orders.filter(order => order._id !== orderId);
+            this.toastService.showToast('Order deleted successfully!', 'success'); // Show success toast
+          }, 150);
         },
         error => {
-          this.serverError = error.error.message || 'An unexpected error occurred.';
+          setTimeout(() => {
+            this.toastService.showToast('Cannot delete order!', 'error');
+            this.serverError = error.error.message || 'An unexpected error occurred.';
+          }, 150);
         }
       );
     }

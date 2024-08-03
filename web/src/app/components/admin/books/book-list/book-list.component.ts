@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { ToastService } from '../../../../utils/toast.service';
 @Component({
   selector: 'app-book-list',
   templateUrl: './book-list.component.html',
@@ -11,7 +12,7 @@ export class BookListComponent implements OnInit {
   books: any[] = []; // Array to hold book data
   serverError: string = ''; // Variable to hold error messages
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService, private router: Router, private toastService: ToastService) {}
 
   private apiUrl = environment.apiUrl;
 
@@ -24,10 +25,8 @@ export class BookListComponent implements OnInit {
     if (token) {
       this.apiService.getBooks(token).subscribe(
         response => {
-          // Assuming response returns an array of books
           this.books = response.map(book => ({
             ...book,
-            // Prefix the image path based on your API static file serving configuration
             image: `${this.apiUrl}/${book.image}`
           }));
         },
@@ -51,17 +50,24 @@ export class BookListComponent implements OnInit {
     if (token) {
       this.apiService.deleteBook(bookId, token).subscribe(
         response => {
-          // Assuming response returns a success message
           this.getBooks();
         },
         error => {
           this.serverError = error.error.message || 'An unexpected error occurred.';
         }
       );
+      setTimeout(() => {
+        this.books = this.books.filter(book => book._id !== bookId); // Simulate book deletion
+        this.toastService.showToast('Book deleted successfully!', 'success'); // Show success toast
+      }, 150); // Simulate service response delay
     } else {
       this.serverError = 'User is not authenticated.';
       this.router.navigate(['/login']);
     }
+  }
+
+  testToast(): void {
+    this.toastService.showToast('This is a test message!', 'success');
   }
 
   createNewBook(): void {

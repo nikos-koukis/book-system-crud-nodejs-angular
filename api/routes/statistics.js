@@ -14,7 +14,7 @@ router.get('/', authenticate, async (req, res) => {
 
     const totalOrders = await Order.countDocuments();
 
-    const pendingOrdersCount = await Order.countDocuments({ status: 'pending' });
+    const pendingOrdersCount = await Order.countDocuments({ status: 'Pending' });
 
     res.json({
       totalCustomers,

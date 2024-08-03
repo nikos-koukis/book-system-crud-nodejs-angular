@@ -19,6 +19,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { CartComponent } from './components/user/cart/cart.component';
 import { OrderListComponent } from './components/admin/orders/order-list/order-list.component';
 import { OrderEditComponent } from './components/admin/orders/order-edit/order-edit.component';
+import { ToastComponent } from './components/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { OrderEditComponent } from './components/admin/orders/order-edit/order-e
     CartComponent,
     OrderListComponent,
     OrderEditComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,

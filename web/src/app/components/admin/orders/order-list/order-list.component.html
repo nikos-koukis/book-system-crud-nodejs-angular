@@ -7,12 +7,12 @@
 
     <div *ngIf="!loading && orders.length === 0" class="alert alert-info text-center mt-5">
         No Orders found.
-      </div>
+    </div>
 
 
     <div *ngIf="loading" class="text-center">
         <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
+            <span class="sr-only">Loading...</span>
         </div>
     </div>
 
@@ -23,7 +23,7 @@
                 <th scope="col">Email</th>
                 <th scope="col">Status</th>
                 <th scope="col">Created At</th>
-                <th scope="col">Actions</th> <!-- New Actions Column -->
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -35,9 +35,9 @@
                     'highlight-completed': order.status === 'Completed',
                     'highlight-cancelled': order.status === 'Cancelled'
                 }">
-                {{ order.status }}
-            </td>
-                <td>{{ order.createdAt | date:'short' }}</td>
+                    {{ order.status }}
+                </td>
+                <td>{{ order.createdAt | date:'dd/MM/yyyy' }}</td>
                 <td>
                     <button class="btn btn-warning btn-sm me-2" (click)="editOrder(order._id)">Edit</button>
                     <button class="btn btn-danger btn-sm" (click)="deleteOrder(order._id)">Delete</button>
@@ -45,4 +45,5 @@
             </tr>
         </tbody>
     </table>
+    <app-toast></app-toast>
 </div>

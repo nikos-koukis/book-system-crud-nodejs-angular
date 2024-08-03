@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../../services/api.service';
 import { environment } from 'src/environments/environment';
+import { ToastService } from '../../../../utils/toast.service';
 
 @Component({
   selector: 'app-book-edit',
@@ -18,7 +19,7 @@ export class BookEditComponent implements OnInit {
   imagePreview: string | null = null; // Property for image preview
   serverError: string = '';
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastService: ToastService) {}
 
   private apiUrl = environment.apiUrl;
 
@@ -59,6 +60,18 @@ export class BookEditComponent implements OnInit {
   }
 
   updateBook(): void {
+
+    if (!this.title || !this.isbn || !this.price || !this.imagePreview) {
+      this.serverError = 'Please fill in all required fields correctly.';
+      return;
+    }
+
+    if (this.stock < 0) {
+      this.serverError = 'Stock cannot be a negative number.';
+      return;
+    }
+
+
     const updatedBook = {
       title: this.title,
       isbn: this.isbn,
@@ -81,10 +94,15 @@ export class BookEditComponent implements OnInit {
     if (token) {
       this.apiService.updateBook(this.bookId, formData, token).subscribe(
         response => {
+          setTimeout(() => {
+            this.toastService.showToast('Book updated successfully!', 'success'); // Show success toast
+          }, 150);
           this.router.navigate(['admin/books']); // Redirect to the books list after updating
         },
         error => {
-          this.serverError = error.error.message || 'An unexpected error occurred.';
+          setTimeout(() => {
+            this.toastService.showToast('Error at updating book!', 'danger'); // Show error toast
+          }, 150);
         }
       );
     } else {

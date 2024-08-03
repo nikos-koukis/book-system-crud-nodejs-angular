@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../../services/api.service';
+import { ToastService } from '../../../../utils/toast.service';
 @Component({
   selector: 'app-book-create',
   templateUrl: './book-create.component.html',
@@ -15,7 +16,7 @@ export class BookCreateComponent implements OnInit {
   imagePreview: string | null = null; // Property for image preview
   serverError: string = '';
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService, private router: Router, private toastService: ToastService) { }
 
   ngOnInit(): void {
     // Any initialization logic can be added here if necessary
@@ -31,11 +32,23 @@ export class BookCreateComponent implements OnInit {
   }
 
   createBook(): void {
+
+
+    if (!this.title || !this.isbn || !this.price || this.stock === null || !this.image) {
+      this.serverError = 'Please fill in all required fields correctly.';
+      return;
+    }
+
+    if (this.stock < 0) {
+      this.serverError = 'Stock cannot be a negative number.';
+      return;
+    }
+
     const newBook = {
       title: this.title,
       isbn: this.isbn,
       stock: this.stock,
-      price : this.price
+      price: this.price
     };
 
     const token = localStorage.getItem('token'); // Retrieve the token
@@ -53,10 +66,16 @@ export class BookCreateComponent implements OnInit {
     if (token) {
       this.apiService.createBook(formData, token).subscribe(
         response => {
+          setTimeout(() => {
+            this.toastService.showToast('Book created successfully!', 'success'); // Show success toast
+          }, 150);
           this.router.navigate(['admin/books']); // Redirect to the books list after creating
         },
         error => {
-          this.serverError = error.error.message || 'An unexpected error occurred.';
+          setTimeout(() => {
+            this.toastService.showToast('Error at creating book!', 'danger'); // Show error toast
+            this.serverError = error.error.message || 'An unexpected error occurred.';
+          }, 150);
         }
       );
     } else {

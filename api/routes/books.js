@@ -19,7 +19,6 @@ const storage = multer.diskStorage({
         cb(null, 'assets/uploads/'); // Directory to store uploaded images
     },
     filename: (req, file, cb) => {
-        //cb(null, `${Date.now()}-${file.originalname}`); // Set a unique filename
         cb(null, `${file.originalname}`); // Set a unique filename
     }
 });
@@ -31,7 +30,6 @@ router.post('/', authenticate, isAdmin, upload.single('image'), async (req, res)
   const { title, isbn, price, stock } = req.body;
   const imagePath = req.file.path; // Get the image path from uploaded file
   try {
-    // Create a new book entry
     const newBook = new Book({ title, isbn, price, stock, image: imagePath }); // Save the path of the uploaded image
     await newBook.save();
 

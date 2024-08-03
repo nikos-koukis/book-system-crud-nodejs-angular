@@ -1,6 +1,12 @@
 <div class="container m-3">
     <h2 class="text-center font-weight-light">Edit Order</h2>
 
+    <div *ngIf="loading" class="text-center flex">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
     <div *ngIf="serverError" class="alert alert-danger">
         {{ serverError }}
     </div>
@@ -31,7 +37,7 @@
                     <div class="flex-grow-1">
                         <h5 class="card-title">{{ book.id.title }}</h5>
                         <p class="card-text"><strong>ISBN:</strong> {{ book.id.isbn }}</p>
-                        <p class="card-text"><strong>Price:</strong> {{ book.id.price.toFixed(2) | currency:'EUR' }}</p>
+                        <p class="card-text"><strong>Price:</strong> {{ book.id.price.toFixed(2) | currency:'EUR'}}</p>
                         <p class="card-text"><strong>Quantity:</strong> {{ book.quantity }}</p>
                     </div>
                 </div>
@@ -58,8 +64,5 @@
         <button type="submit" class="btn btn-primary me-2" (click)="onSubmit()" [disabled]="order.status !== 'Pending'">Update Status</button>
         <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
     </div>
-
-    <div *ngIf="loading" class="text-center">
-        <p>Loading...</p>
-    </div>
+    <app-toast></app-toast>
 </div>

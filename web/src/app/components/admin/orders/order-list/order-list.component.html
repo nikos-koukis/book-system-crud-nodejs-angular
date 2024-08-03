@@ -30,7 +30,13 @@
             <tr *ngFor="let order of orders; let i = index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ order.user.id.email }}</td>
-                <td [ngClass]="{'highlight-pending': order.status === 'Pending'}">{{ order.status }}</td>
+                <td [ngClass]="{
+                    'highlight-pending': order.status === 'Pending',
+                    'highlight-completed': order.status === 'Completed',
+                    'highlight-cancelled': order.status === 'Cancelled'
+                }">
+                {{ order.status }}
+            </td>
                 <td>{{ order.createdAt | date:'short' }}</td>
                 <td>
                     <button class="btn btn-warning btn-sm me-2" (click)="editOrder(order._id)">Edit</button>

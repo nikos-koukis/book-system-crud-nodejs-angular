@@ -125,14 +125,26 @@ router.put('/:orderId/status', authenticate, isAdmin, async (req, res) => {
             return res.status(404).json({ error: 'Order not found' });
         }
 
-        // If the status is 'Cancelled', update stock
-        if (status === 'Cancelled') {
-            for (const book of order.books) {
-                await Book.findByIdAndUpdate(book.id, {
-                    $inc: { stock: book.quantity } // Increment the stock by the quantity ordered
-                });
+        // If the status is 'Pending', allow update to Completed or Cancelled
+        if (order.status === 'Pending') {
+            if (status === 'Cancelled') {
+                // If the status is 'Cancelled', update stock
+                for (const book of order.books) {
+                    await Book.findByIdAndUpdate(book.id, {
+                        $inc: { stock: book.quantity } // Increment the stock by the quantity ordered
+                    });
+                }
+            } else if (status === 'Completed') {
+                // Update to 'Completed' without any additional actions
+            } else {
+                // If the status is neither 'Completed' nor 'Cancelled', return an error
+                return res.status(400).json({ error: 'Invalid status' });
             }
-        }else{
+        } else if (order.status === 'Cancelled' || order.status === 'Completed') {
+            // If already in 'Cancelled' or 'Completed', disallow updates
+            return res.status(400).json({ error: `Order status cannot be updated once set to '${order.status}'.` });
+        } else {
+            // If the status is anything else that is unexpected
             return res.status(400).json({ error: 'Invalid status' });
         }
 
@@ -146,7 +158,6 @@ router.put('/:orderId/status', authenticate, isAdmin, async (req, res) => {
         res.status(500).json({ error: 'Error updating order status', details: error.message });
     }
 });
-
 router.get('/:orderId', authenticate, async (req, res) => {
     const { orderId } = req.params;
 

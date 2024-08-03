@@ -37,7 +37,6 @@ router.post('/', authenticate, isAdmin, upload.single('image'), async (req, res)
 
     res.status(201).json(newBook); // Respond with the created book
   } catch (error) {
-    console.error('Error creating book:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
@@ -48,7 +47,6 @@ router.get('/', authenticate, async (req, res) => {
     const books = await Book.find(); // Fetch all books from the database
     res.json(books); // Return the list of books
   } catch (error) {
-    console.error('Error retrieving books:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
@@ -63,7 +61,6 @@ router.get('/:id', authenticate, isAdmin, async (req, res) => {
     }
     res.json(book); // Return the found book
   } catch (error) {
-    console.error('Error retrieving the book:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
@@ -86,7 +83,6 @@ router.put('/:id', authenticate, isAdmin, upload.single('image'), async (req, re
 
     res.json(updatedBook); // Return the updated book
   } catch (error) {
-    console.error('Error updating book:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
@@ -102,7 +98,6 @@ router.delete('/:id', authenticate, isAdmin, async (req, res) => {
     }
     res.json({ message: 'Book deleted successfully.' }); // Confirmation message
   } catch (error) {
-    console.error('Error deleting book:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });

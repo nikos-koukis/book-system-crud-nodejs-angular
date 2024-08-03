@@ -54,11 +54,9 @@ export class BookCreateComponent implements OnInit {
     if (token) {
       this.apiService.createBook(formData, token).subscribe(
         response => {
-          console.log('Book created successfully', response);
           this.router.navigate(['admin/books']); // Redirect to the books list after creating
         },
         error => {
-          console.error('Failed to create book', error);
           this.serverError = error.error.message || 'An unexpected error occurred.';
         }
       );

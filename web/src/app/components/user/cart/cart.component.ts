@@ -76,7 +76,6 @@ export class CartComponent implements OnInit {
                   this.userDetails.email = response.user.email; 
               },
               error => {
-                  console.error('Failed to fetch user details', error);
               }
           );
       }
@@ -110,12 +109,10 @@ export class CartComponent implements OnInit {
                             this.router.navigate(['/dashboard']);
                         },
                         error => {
-                            console.error('Failed to submit order', error);
                         }
                     );
                 },
                 error => {
-                    console.error('Failed to fetch user details', error);
                     return;
                 }
             );

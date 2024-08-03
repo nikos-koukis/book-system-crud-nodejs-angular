@@ -33,21 +33,18 @@ export class RegisterComponent {
 
     // If there are validation errors, do not proceed
     if (this.validationErrors.length > 0) {
-      console.error('Registration failed due to validation errors', this.validationErrors);
       return; // Stop the registration process
     }
 
     //Proceed with registration if there are no validation errors
     this.authService.register(user).subscribe(
       response => {
-        console.log('Registration successful', response);
         // Clear the form fields
         this.clearFormFields();
         // Redirect to the login page
         this.router.navigate(['/login']);
       },
       error => {
-        console.error('Registration failed', error);
         this.serverError = error.error.message || 'An unexpected error occurred.';
       }
     );

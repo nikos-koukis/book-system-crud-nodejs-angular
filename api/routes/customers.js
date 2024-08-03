@@ -17,7 +17,6 @@ router.get('/', authenticate, isAdmin, async (req, res) => {
         const customers = await Customer.find({ user: req.user._id }); // Fetch customers for the logged-in admin
         res.json(customers); // Respond with the list of customers
     } catch (error) {
-        console.error('Error retrieving customers:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
@@ -40,7 +39,6 @@ router.put('/:id', authenticate, isAdmin, async (req, res) => {
         
         res.json(customer); // Respond with the updated customer
     } catch (error) {
-        console.error('Error updating customer:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
@@ -56,7 +54,6 @@ router.delete('/:id', authenticate, isAdmin, async (req, res) => {
         }
         res.json({ message: 'Customer deleted successfully.' }); // Success message on deletion
     } catch (error) {
-        console.error('Error deleting customer:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 });

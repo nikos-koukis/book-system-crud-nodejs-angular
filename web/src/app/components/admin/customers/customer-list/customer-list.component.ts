@@ -27,7 +27,6 @@ export class CustomerListComponent implements OnInit {
           this.customers = response; // Assuming the response returns an array of customers
         },
         error => {
-          console.error('Failed to fetch customers', error);
           this.serverError = error.error.message || 'An unexpected error occurred.';
         }
       );
@@ -49,12 +48,10 @@ export class CustomerListComponent implements OnInit {
     if (token) {
       this.apiService.updateCustomer(this.updatedCustomer._id, this.updatedCustomer, token).subscribe(
         response => {
-          console.log('Customer updated successfully', response);
           this.getCustomers(); // Refresh the list after editing
           this.editingCustomerId = null; // Clear the editing ID after saving
         },
         error => {
-          console.error('Failed to update customer', error);
           this.serverError = error.error.message || 'An unexpected error occurred.';
         }
       );
@@ -76,11 +73,9 @@ export class CustomerListComponent implements OnInit {
     if (token) {
       this.apiService.deleteCustomer(customerId, token).subscribe(
         response => {
-          console.log('Customer deleted successfully', response);
           this.getCustomers(); // Refresh the customer list
         },
         error => {
-          console.error('Failed to delete customer', error);
           this.serverError = error.error.message || 'An unexpected error occurred.';
         }
       );

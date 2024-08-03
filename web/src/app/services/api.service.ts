@@ -73,9 +73,19 @@ export class ApiService {
     return this.http.get<any>(`${this.apiUrl}/order`, { headers });
   }
 
+  getOrder(orderId: string, token: string): Observable<any> { // Specify return type
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/order/${orderId}`, { headers });
+  }
+
   deleteOrder(orderId: string, token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.delete(`${this.apiUrl}/order/${orderId}`, { headers });
+  }
+
+  updateOrder(orderId: string, order: any, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put(`${this.apiUrl}/order/${orderId}/status`, order, { headers });
   }
 
 }

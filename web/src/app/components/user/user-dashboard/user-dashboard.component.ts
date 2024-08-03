@@ -40,7 +40,6 @@ export class UserDashboardComponent implements OnInit {
           });
         },
         error => {
-          console.error('Failed to fetch books', error);
           this.serverError = error.error.message || 'An unexpected error occurred.';
         }
       );

@@ -38,7 +38,6 @@ export class BookEditComponent implements OnInit {
           
         },
         error => {
-          console.error('Failed to fetch book data', error);
           this.serverError = error.error.message || 'An unexpected error occurred.';
         }
       );
@@ -79,11 +78,9 @@ export class BookEditComponent implements OnInit {
     if (token) {
       this.apiService.updateBook(this.bookId, formData, token).subscribe(
         response => {
-          console.log('Book updated successfully', response);
           this.router.navigate(['admin/books']); // Redirect to the books list after updating
         },
         error => {
-          console.error('Failed to update book', error);
           this.serverError = error.error.message || 'An unexpected error occurred.';
         }
       );

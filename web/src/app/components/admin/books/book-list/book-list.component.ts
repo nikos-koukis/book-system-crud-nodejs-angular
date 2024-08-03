@@ -32,7 +32,6 @@ export class BookListComponent implements OnInit {
           }));
         },
         error => {
-          console.error('Failed to fetch books', error);
           this.serverError = error.error.message || 'An unexpected error occurred.';
         }
       );
@@ -53,11 +52,9 @@ export class BookListComponent implements OnInit {
       this.apiService.deleteBook(bookId, token).subscribe(
         response => {
           // Assuming response returns a success message
-          console.log('Book deleted successfully', response);
           this.getBooks();
         },
         error => {
-          console.error('Failed to delete book', error);
           this.serverError = error.error.message || 'An unexpected error occurred.';
         }
       );

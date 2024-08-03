@@ -34,12 +34,10 @@ export class LoginComponent {
             this.router.navigate(['/dashboard']); // Redirect to user dashboard
           }
         }, error => {
-          console.error('Failed to fetch user dashboard', error);
           this.serverError = 'Failed to fetch user information. Please try again.';
         });
       },
       error => {
-        console.error('Login failed', error);
         this.serverError = error.error.message || 'Login failed. Please try again.';
       }
     );

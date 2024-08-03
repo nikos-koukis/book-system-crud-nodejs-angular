@@ -58,7 +58,6 @@ export class OrderListComponent implements OnInit {
           this.loading = false; // Turn off loading
         },
         error => {
-          console.error('Failed to fetch orders', error);
           this.serverError = error.error.message || 'An unexpected error occurred.';
           this.loading = false; // Also turn off loading on error
         }
@@ -77,7 +76,6 @@ export class OrderListComponent implements OnInit {
           this.orders = this.orders.filter(order => order._id !== orderId);
         },
         error => {
-          console.error('Failed to delete order', error);
           this.serverError = error.error.message || 'An unexpected error occurred.';
         }
       );

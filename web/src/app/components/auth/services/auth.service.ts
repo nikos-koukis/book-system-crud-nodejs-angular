@@ -31,6 +31,11 @@ export class AuthService implements OnInit{
 
   // Login method
   login(credentials: { email: string; password: string }): Observable<any> {
+    if (isDevMode()) {
+      console.log('Development!');
+    } else {
+      console.log('Production!');
+    }
     return this.http.post(`${this.apiUrl}/auth/login`, credentials);
   }
 

@@ -16,6 +16,7 @@ export class AuthService implements OnInit{
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
+    console.log('Auth service initialized!');
     if (isDevMode()) {
       console.log('Development!');
     } else {

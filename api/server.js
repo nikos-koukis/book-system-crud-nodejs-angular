@@ -18,11 +18,24 @@ const PORT = process.env.PORT || 80;
 // // Connect to MongoDB
 connectDB();
 
-// // Use CORS with specific origins
+const allowedOrigins = [
+    'http://localhost:4200', // Development Origin
+    'https://nodejs-angular-beryl.vercel.app' // Production Origin
+];
+
+//Use CORS with specific origins
 app.use(cors({
-    origin: 'http://localhost:4200', // Allow requests from Angular frontend
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify the methods you want to allow
-    credentials: true // Enable cookies, authorization headers, and TLS client certificates
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
 }));
 
 // // Middleware to parse JSON request bodies

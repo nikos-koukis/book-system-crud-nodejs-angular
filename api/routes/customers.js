@@ -1,6 +1,6 @@
 const express = require('express');
-const Customer = require('../models/Customer'); // Import Customer model
-const { authenticate } = require('../middlewares/authentication'); // Import authenticate middleware
+const User = require('../models/User');
+const { authenticate } = require('../middlewares/authentication');
 const router = express.Router();
 
 // Middleware to check if the user is an admin
@@ -14,47 +14,42 @@ const isAdmin = (req, res, next) => {
 // Get all customers for the admin (based on user's role)
 router.get('/', authenticate, isAdmin, async (req, res) => {
     try {
-        const customers = await Customer.find({ user: req.user._id }); // Fetch customers for the logged-in admin
-        res.json(customers); // Respond with the list of customers
-    } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        const customers = await User.find({ isCustomer: true });
+        res.status(200).json(customers);
+    } catch (err) {
+        res.status(500).json({ message: 'Error retrieving users', error: err.message });
     }
 });
 
-// Update a customer by ID (admin only)
-router.put('/:id', authenticate, isAdmin, async (req, res) => {
-    const { id } = req.params; // Get customer ID from URL
-    const { name, email, phone } = req.body;
+
+router.put('/:id', authenticate, async (req, res) => {
+    const { id } = req.params; // Get the user ID from the request parameters
 
     try {
-        const customer = await Customer.findByIdAndUpdate(
+        // Find the user by ID
+        const user = await User.findById(id);
+
+        // Check if the user exists
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' }); // Handle user not found
+        }
+
+        // Check if the user's role is 'user'
+        if (user.role !== 'user') {
+            return res.status(403).json({ message: 'You can only update users with the role of "user"' }); // Handle unauthorized role
+        }
+
+        // Proceed to update the isCustomer field
+        const updatedUser = await User.findByIdAndUpdate(
             id,
-            { name, email, phone },
-            { new: true } // Return the updated document
+            { isCustomer: true }, // Set isCustomer to true
+            { new: true, runValidators: true } // Return the updated document and run validation
         );
-        
-        if (!customer) {
-            return res.status(404).json({ message: 'Customer not found.' });
-        }
-        
-        res.json(customer); // Respond with the updated customer
-    } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
 
-// Delete a customer by ID (admin only)
-router.delete('/:id', authenticate, isAdmin, async (req, res) => {
-    const { id } = req.params; // Get customer ID from URL
-
-    try {
-        const customer = await Customer.findByIdAndDelete(id);
-        if (!customer) {
-            return res.status(404).json({ message: 'Customer not found.' });
-        }
-        res.json({ message: 'Customer deleted successfully.' }); // Success message on deletion
+        // Return the updated user information
+        res.status(200).json(updatedUser);
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Error updating user', error: error.message }); // Handle errors
     }
 });
 

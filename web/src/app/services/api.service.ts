@@ -18,23 +18,28 @@ export class ApiService {
     return this.http.get<any[]>(`${this.apiUrl}/customers`, { headers });
   }
 
-  // Method to get a customer by ID
-  getCustomerById(id: string, token: string): Observable<any> {
+  updateUserToCustomer(token: string, userID: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any>(`${this.apiUrl}/customers/${id}`, { headers });
+    return this.http.put(`${this.apiUrl}/customers/${userID}`, {}, { headers });
   }
+
+  // Method to get a customer by ID
+  // getCustomerById(id: string, token: string): Observable<any> {
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  //   return this.http.get<any>(`${this.apiUrl}/customers/${id}`, { headers });
+  // }
 
   // Method to update a customer
-  updateCustomer(id: string, customer: any, token: string): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.put(`${this.apiUrl}/customers/${id}`, customer, { headers });
-  }
+  // updateCustomer(id: string, customer: any, token: string): Observable<any> {
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  //   return this.http.put(`${this.apiUrl}/customers/${id}`, customer, { headers });
+  // }
 
   // Method to delete a customer
-  deleteCustomer(id: string, token: string): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.delete(`${this.apiUrl}/customers/${id}`, { headers });
-  }
+  // deleteCustomer(id: string, token: string): Observable<any> {
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  //   return this.http.delete(`${this.apiUrl}/customers/${id}`, { headers });
+  // }
 
   getBooks(token: string): Observable<any[]> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);

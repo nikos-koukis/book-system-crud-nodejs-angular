@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from '../../auth/services/auth.service';
-
+import { environment } from 'src/environments/environment';
 interface Book {
   id: {
     _id: string;
@@ -36,12 +36,14 @@ interface Order {
 })
 export class MyOrdersComponent implements OnInit {
   userID: { _id: string; } = { _id: '' };
-  orders: Order[] = []; // Store order data as an array of Order
-  loading: boolean = true; // Loading state
-  serverError: string | null = null; // Error message state
-  private apiUrl = 'http://localhost:80'; // Base URL for image paths
+  orders: Order[] = [];
+  loading: boolean = true;
+  serverError: string | null = null;
+  selectedOrder: Order | null = null; // Hold the selected order
+  isModalOpen: boolean = false; // Modal visibility state
+  private apiUrl = environment.apiUrl;
 
-  constructor(private authService: AuthService, private apiService: ApiService) { }
+  constructor(private authService: AuthService, private apiService: ApiService) {}
 
   ngOnInit(): void {
     this.getUserDetails();
@@ -53,12 +55,12 @@ export class MyOrdersComponent implements OnInit {
       this.authService.getDashboard(token).subscribe(
         response => {
           this.userID._id = response.user._id;
-          this.getOrdersbyUser(); // Fetch orders after user ID is set
+          this.getOrdersbyUser();
         },
         error => {
           console.error('Error fetching user details', error);
           this.serverError = 'Failed to load user details.';
-          this.loading = false; // Stop loading
+          this.loading = false;
         }
       );
     }
@@ -69,20 +71,29 @@ export class MyOrdersComponent implements OnInit {
     if (token && this.userID._id) {
       this.apiService.getOrdersByUser(token, this.userID._id).subscribe(
         response => {
-          this.orders = response.orders; // Store the orders from the response
+          this.orders = response.orders;
           this.orders.forEach(order => {
-            // Construct image URLs for books in each order
             order.books = order.books.map(book => ({
               ...book,
               id: { ...book.id, image: `${this.apiUrl}/${book.id.image}` }
             }));
           });
-          this.loading = false; // Data loading completed
+          this.loading = false;
         },
         error => {
-          this.loading = false; // Stop loading
+          this.loading = false;
         }
       );
     }
+  }
+  
+  openOrderDetailsModal(order: Order): void {
+    this.selectedOrder = order; // Set the selected order
+    this.isModalOpen = true; // Open the modal
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false; // Close the modal
+    this.selectedOrder = null; // Clear the selected order
   }
 }

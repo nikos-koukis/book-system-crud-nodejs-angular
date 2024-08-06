@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../../../services/api.service';
 import { ToastService } from '../../../../utils/toast.service';
-
+import { environment } from 'src/environments/environment';
 interface Book {
     id: {
         _id: string;
@@ -56,7 +56,7 @@ export class OrderEditComponent implements OnInit {
     loading: boolean = true;
     selectedStatus: string = ''; // Property to hold the user-selected status
 
-    private apiUrl = 'http://localhost:80';
+    private apiUrl = environment.apiUrl;
 
     constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute, private toastService: ToastService) {}
 

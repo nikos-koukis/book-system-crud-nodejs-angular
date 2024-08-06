@@ -20,7 +20,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ['user', 'admin'],
       default: 'user'
-    }
+    },
+    isCustomer: {
+      type: Boolean,
+      default: 0,
+      enum: [0, 1]
+    },
   },
   { timestamps: true }
 );

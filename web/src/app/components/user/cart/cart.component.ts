@@ -115,6 +115,7 @@ export class CartComponent implements OnInit {
 
                             setTimeout(() => {
                                 this.toastService.showToast('Order submitted successfully', 'success');
+                                this.updateUserToCustomer(token, userId);
                             }, 150);
                             this.router.navigate(['/dashboard']);
                         },
@@ -128,4 +129,12 @@ export class CartComponent implements OnInit {
             );
         }
     }
+
+    updateUserToCustomer(token: string, userID: string): void {
+        this.apiService.updateUserToCustomer(token, userID).subscribe(
+            response => {},
+            error => {}
+        );
+    }
+
 }

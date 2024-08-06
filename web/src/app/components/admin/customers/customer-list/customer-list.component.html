@@ -14,37 +14,12 @@
       <tr>
         <th>Name</th>
         <th>Email</th>
-        <th>Phone</th>
-        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let customer of customers">
-        <td *ngIf="editingCustomerId !== customer._id">{{ customer.name }}</td>
-        <td *ngIf="editingCustomerId === customer._id">
-          <input type="text" [(ngModel)]="updatedCustomer.name" class="form-control" required />
-        </td>
-
+        <td *ngIf="editingCustomerId !== customer._id">{{ customer.username }}</td>
         <td *ngIf="editingCustomerId !== customer._id">{{ customer.email }}</td>
-        <td *ngIf="editingCustomerId === customer._id">
-          <input type="email" [(ngModel)]="updatedCustomer.email" class="form-control" required />
-        </td>
-
-        <td *ngIf="editingCustomerId !== customer._id">{{ customer.phone }}</td>
-        <td *ngIf="editingCustomerId === customer._id">
-          <input type="text" [(ngModel)]="updatedCustomer.phone" class="form-control" required />
-        </td>
-
-        <td>
-          <ng-container *ngIf="editingCustomerId !== customer._id">
-            <button (click)="openEditCustomerModal(customer)" class="btn btn-warning">Edit</button>
-            <button class="btn btn-danger" (click)="deleteCustomer(customer._id)">Delete</button>
-          </ng-container>
-          <ng-container *ngIf="editingCustomerId === customer._id">
-            <button (click)="saveCustomer()" class="btn btn-success">Save</button>
-            <button (click)="cancelEditing()" class="btn btn-secondary">Cancel</button>
-          </ng-container>
-        </td>
       </tr>
     </tbody>
   </table>

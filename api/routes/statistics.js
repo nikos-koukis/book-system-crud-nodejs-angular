@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Customer = require('../models/Customer');
+const User = require('../models/User');
 const Book = require('../models/Book');
 const Order = require('../models/Order');
 const { authenticate } = require('../middlewares/authentication');
@@ -8,7 +8,7 @@ const { authenticate } = require('../middlewares/authentication');
 
 router.get('/', authenticate, async (req, res) => {
   try {
-    const totalCustomers = await Customer.countDocuments();
+    const totalCustomers = await User.countDocuments({ isCustomer: true });
 
     const totalBooks = await Book.countDocuments();
 

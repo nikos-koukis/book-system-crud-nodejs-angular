@@ -18,11 +18,6 @@ const PORT = process.env.PORT || 80;
 // // Connect to MongoDB
 connectDB();
 
-const allowedOrigins = [
-    'http://localhost:4200', // Development Origin
-    'https://nodejs-angular-beryl.vercel.app' // Production Origin
-];
-
 //Use CORS with specific origins
 app.use(cors({
     origin: '*', // This allows all origins - for debugging purposes only

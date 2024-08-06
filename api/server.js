@@ -25,15 +25,7 @@ const allowedOrigins = [
 
 //Use CORS with specific origins
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin) return callback(null, true);
-        
-        if (allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: '*', // This allows all origins - for debugging purposes only
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));

@@ -80,8 +80,6 @@ export class MyOrdersComponent implements OnInit {
           this.loading = false; // Data loading completed
         },
         error => {
-          console.error('Error fetching orders', error);
-          this.serverError = 'Failed to load orders.';
           this.loading = false; // Stop loading
         }
       );

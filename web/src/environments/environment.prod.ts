@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://your-production-url.com' // Production API URL
+    apiUrl: 'https://api-nodejs-angular-alpha.vercel.app/'
   };

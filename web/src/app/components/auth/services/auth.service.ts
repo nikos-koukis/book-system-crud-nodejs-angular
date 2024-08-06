@@ -9,18 +9,15 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements OnInit{
+export class AuthService{
   private apiUrl = environment.apiUrl + '/api';
   private userRole: string | null = null; // Add a property to store user role
 
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
-    console.log('Auth service initialized!');
-    if (isDevMode()) {
-      console.log('Development!');
-    } else {
-      console.log('Production!');
+    if (environment.production) {
+      this.apiUrl = environment.apiUrl + '/api';
     }
   }
 
@@ -31,11 +28,7 @@ export class AuthService implements OnInit{
 
   // Login method
   login(credentials: { email: string; password: string }): Observable<any> {
-    if (isDevMode()) {
-      console.log('Development!');
-    } else {
-      console.log('Production!');
-    }
+    console.log(this.apiUrl);
     return this.http.post(`${this.apiUrl}/auth/login`, credentials);
   }
 

@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService{
+export class AuthService implements OnInit{
   private apiUrl = environment.apiUrl + '/api';
   private userRole: string | null = null; // Add a property to store user role
 

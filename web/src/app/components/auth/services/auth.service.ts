@@ -1,6 +1,6 @@
 // auth.service.ts
 
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
@@ -9,11 +9,19 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnInit{
   private apiUrl = environment.apiUrl + '/api';
   private userRole: string | null = null; // Add a property to store user role
 
   constructor(private http: HttpClient, private router: Router) { }
+
+  ngOnInit() {
+    if (isDevMode()) {
+      console.log('Development!');
+    } else {
+      console.log('Production!');
+    }
+  }
 
   // Registration method
   register(user: any): Observable<any> {

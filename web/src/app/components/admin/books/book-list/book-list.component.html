@@ -8,6 +8,13 @@
   </div>
 
   <div class="row mt-5">
+
+    <!-- Message for empty book list -->
+    <div *ngIf="books.length === 0" class="col-12 text-center alert alert-info pb-0">
+      <p>No books available. Please add a new book to the list.</p>
+    </div>
+
+    <!-- Loop through books and display each book -->
     <div class="col-md-4 mb-4 d-flex" *ngFor="let book of books">
       <div class="card w-100">
         <img src="{{ book.image }}" class="card-img-top img-fluid" alt="{{ book.title }} Image">
@@ -22,6 +29,8 @@
           </div>
         </div>
       </div>
+    </div>
+    
   </div>
   <app-toast></app-toast>
 </div>

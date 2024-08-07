@@ -1,5 +1,6 @@
 const express = require('express');
 const Book = require('../models/Book'); // Import Book model
+const Order = require('../models/Order'); // Import Order model
 const { authenticate } = require('../middlewares/authentication')
 const multer = require('multer'); // Import multer for file handling
 const path = require('path');
@@ -87,16 +88,31 @@ router.put('/:id', authenticate, isAdmin, upload.single('image'), async (req, re
 
 // Delete a book by ID
 router.delete('/:id', authenticate, isAdmin, async (req, res) => {
-  const { id } = req.params; // Get book ID from URL
+  const { id } = req.params; // Get the book ID from URL
 
   try {
-    const deletedBook = await Book.findByIdAndDelete(id);
-    if (!deletedBook) {
+    // Find the book first
+    const book = await Book.findById(id);
+    if (!book) {
       return res.status(404).json({ message: 'Book not found.' });
     }
-    res.json({ message: 'Book deleted successfully.' }); // Confirmation message
+
+    // Debugging: Log book ID
+    console.log('Book ID to delete:', book._id);
+      
+    // Check how many orders refer to this book
+    const orders = await Order.find({ 'books.id': book._id });
+    
+    // Delete all orders associated with this book
+    const result = await Order.deleteMany({ 'books.id': book._id });
+
+    // Now delete the book
+    await Book.findByIdAndDelete(id);
+
+    return res.json({ message: 'Book and associated orders deleted successfully.' });
+    
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
 

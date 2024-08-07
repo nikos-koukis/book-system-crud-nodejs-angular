@@ -1,6 +1,9 @@
 <div class="container mt-5">
     <h2 class="text-center font-weight-light">Books</h2>
     <div *ngIf="serverError" class="alert alert-danger">{{ serverError }}</div>
+    <div *ngIf="books.length === 0" class="col-12 text-center alert alert-info pb-0 mt-5">
+        <p>No books available</p>
+    </div>
     <div class="row mt-5">
         <div class="col-md-4 mb-4 d-flex" *ngFor="let book of books">
             <div class="card w-100">
@@ -11,9 +14,11 @@
                     <p class="card-text">Price: {{ book.price | currency:'EUR' }}</p>
                     <div class="mt-auto">
                         <ng-container *ngIf="book.stock > 0; else outOfStock">
-                            <button *ngIf="!isInCart(book)" class="btn btn-primary w-100" (click)="addToCart(book)">Add to
+                            <button *ngIf="!isInCart(book)" class="btn btn-primary w-100" (click)="addToCart(book)">Add
+                                to
                                 Cart</button>
-                            <button *ngIf="isInCart(book)" class="btn btn-danger  w-100" (click)="removeFromCart(book)">Remove
+                            <button *ngIf="isInCart(book)" class="btn btn-danger  w-100"
+                                (click)="removeFromCart(book)">Remove
                                 from Cart</button>
                         </ng-container>
                         <ng-template #outOfStock>

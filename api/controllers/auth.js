@@ -1,12 +1,16 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { validateEmail, validatePassword } = require('../utils/validators');
+const { validateEmail, isPhoneValid, validatePassword } = require('../utils/validators');
 
 const register = async (req, res) => {
-  const { username, email, password, role } = req.body;
+  const { username, email, phone, password, role } = req.body;
 
     if (!validateEmail(email)) {
       return res.status(400).json({ message: 'Invalid email format.' });
+    }
+
+    if (!isPhoneValid(phone)) {
+      return res.status(400).json({ message: 'Invalid phone format.' });
     }
 
     if (!validatePassword(password)) {
@@ -19,7 +23,7 @@ const register = async (req, res) => {
       return res.status(400).json({ message: 'Email is already in use.' });
     }
 
-    const user = new User({ username, email, password, role });
+    const user = new User({ username, email, phone, password, role });
     await user.save();
 
     res.status(201).json({ message: 'Registration successful' });

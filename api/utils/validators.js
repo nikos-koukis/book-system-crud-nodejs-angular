@@ -8,7 +8,13 @@ const validatePassword = (password) => {
   return password.length > 4;
 };
 
+const isPhoneValid = (phone) => {
+  const phoneRegex = /^69\d{8}$/;
+  return phoneRegex.test(phone);
+}
+
 module.exports = {
   validateEmail,
+  isPhoneValid,
   validatePassword,
 };

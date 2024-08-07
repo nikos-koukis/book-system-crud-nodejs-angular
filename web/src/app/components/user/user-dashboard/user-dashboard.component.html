@@ -1,11 +1,21 @@
 <div class="container mt-5">
     <h2 class="text-center font-weight-light">Books</h2>
+    
     <div *ngIf="serverError" class="alert alert-danger">{{ serverError }}</div>
-    <div *ngIf="books.length === 0" class="col-12 text-center alert alert-info pb-0 mt-5">
+    
+    <div *ngIf="loading" class="text-center">
+        <p>Loading books, please wait...</p>
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && books.length === 0" class="col-12 text-center alert alert-info pb-0 mt-5">
         <p>No books available</p>
     </div>
-    <div class="row mt-5">
-        <div class="col-md-4 mb-4 d-flex" *ngFor="let book of books">
+
+    <div class="row mt-5 mb-5" *ngIf="!loading">
+        <div class="col-md-3 mb-3 d-flex" *ngFor="let book of books">
             <div class="card w-100">
                 <img *ngIf="book.image" [src]="book.image" class="card-img-top" alt="{{ book.title }} image">
                 <div class="card-body d-flex flex-column">
@@ -14,19 +24,17 @@
                     <p class="card-text">Price: {{ book.price | currency:'EUR' }}</p>
                     <div class="mt-auto">
                         <ng-container *ngIf="book.stock > 0; else outOfStock">
-                            <button *ngIf="!isInCart(book)" class="btn btn-primary w-100" (click)="addToCart(book)">Add
-                                to
-                                Cart</button>
-                            <button *ngIf="isInCart(book)" class="btn btn-danger  w-100"
-                                (click)="removeFromCart(book)">Remove
-                                from Cart</button>
+                            <button *ngIf="!isInCart(book)" class="btn btn-primary w-100" (click)="addToCart(book)">Add to Cart</button>
+                            <button *ngIf="isInCart(book)" class="btn btn-danger w-100" (click)="removeFromCart(book)">Remove from Cart</button>
                         </ng-container>
                         <ng-template #outOfStock>
-                            <span class="text-danger">Out of Stock</span>
+                            <button class="btn btn-danger w-100" disabled>Out of stock</button>
                         </ng-template>
                     </div>
                 </div>
             </div>
         </div>
-        <app-toast></app-toast>
     </div>
+
+    <app-toast></app-toast>
+</div>

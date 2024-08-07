@@ -12,6 +12,10 @@
           <input type="email" id="email" class="form-control" [(ngModel)]="email" name="email" required autocomplete="email" /> <!-- Added autocomplete -->
         </div>
         <div class="mb-3">
+          <label for="phone" class="form-label">Phone</label>
+          <input type="text" id="phone" class="form-control" [(ngModel)]="phone" name="phone"  maxlength="10" required />
+        </div>
+        <div class="mb-3">
           <label for="password" class="form-label">Password</label>
           <input type="password" id="password" class="form-control" [(ngModel)]="password" name="password" required autocomplete="new-password" /> <!-- Added autocomplete -->
         </div>

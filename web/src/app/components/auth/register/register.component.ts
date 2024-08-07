@@ -11,6 +11,7 @@ import { Router } from '@angular/router'; // Import Router for navigation
 export class RegisterComponent {
   username: string = '';
   email: string = '';
+  phone: string = '';
   password: string = '';
   confirmPassword: string = ''; // New field for confirm password
   role: string = 'user';
@@ -23,6 +24,7 @@ export class RegisterComponent {
     const user = {
       username: this.username,
       email: this.email,
+      phone: this.phone,
       password: this.password,
       confirmPassword: this.confirmPassword, // Include confirm password in the user object
       role: this.role
@@ -53,6 +55,7 @@ export class RegisterComponent {
   private clearFormFields() {
     this.username = '';
     this.email = '';
+    this.phone = '';
     this.password = '';
     this.confirmPassword = '';
     this.role = 'user'; // Reset to the default role

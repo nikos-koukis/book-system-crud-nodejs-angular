@@ -26,8 +26,13 @@ export class ValidationService {
     return typeof password === 'string' && password.length > 4;
   }
 
+  isPhoneValid(phone: string): boolean {
+    const phoneRegex = /^69\d{8}$/; // Must start with 69 followed by 8 digits
+    return phoneRegex.test(phone);
+  }
+
   // Validate the entire user registration form
-  validateRegistrationForm(user: { username: string; email: string; password: string; confirmPassword: string }): string[] {
+  validateRegistrationForm(user: { username: string; email: string; phone: string, password: string; confirmPassword: string }): string[] {
     const errors: string[] = [];
 
     if (this.isFieldEmpty(user.username)) {
@@ -36,6 +41,10 @@ export class ValidationService {
     
     if (this.isFieldEmpty(user.email)) {
       errors.push('Email is required.');
+    }
+
+    if (this.isFieldEmpty(user.phone)) {
+      errors.push('Phone is required.');
     }
 
     if (this.isFieldEmpty(user.password)) {
@@ -48,13 +57,24 @@ export class ValidationService {
       errors.push('Passwords do not match.');
     }
 
-    if(this.isEmailValid(user.email) === false){
-      errors.push('Email is invalid.');
-    }
+    if (!this.isFieldEmpty(user.username) && 
+        !this.isFieldEmpty(user.email) && 
+        !this.isFieldEmpty(user.phone) && 
+        !this.isFieldEmpty(user.password) && 
+        !this.isFieldEmpty(user.confirmPassword)) {
+        
+        if (!this.isEmailValid(user.email)) {
+            errors.push('Email is invalid.');
+        }
 
-    if(this.isPasswordValid(user.password) === false){
-      errors.push('Password is invalid.');
-    } 
+        if (!this.isPhoneValid(user.phone)) {
+          errors.push('Phone is invalid.');
+      }
+
+        if (!this.isPasswordValid(user.password)) {
+            errors.push('Password is invalid.');
+        }
+    }
 
     return errors;
   }

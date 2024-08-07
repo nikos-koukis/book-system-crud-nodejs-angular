@@ -19,6 +19,7 @@ interface Book {
 export class UserDashboardComponent implements OnInit {
   books: Book[] = [];
   serverError: string = '';
+  loading: boolean = false;
 
   constructor(private apiService: ApiService, private router: Router, private toastService: ToastService) {}
 
@@ -29,6 +30,7 @@ export class UserDashboardComponent implements OnInit {
   }
 
   loadBooks(): void {
+    this.loading = true;
     const token = localStorage.getItem('token');
     if (token) {
       this.apiService.getBooks(token).subscribe(
@@ -39,14 +41,17 @@ export class UserDashboardComponent implements OnInit {
               image: `${this.apiUrl}/${book.image}`
             };
           });
+          this.loading = false;
         },
         error => {
           this.serverError = error.error.message || 'An unexpected error occurred.';
+          this.loading = false;
         }
       );
     } else {
       this.serverError = 'User is not authenticated.';
       this.router.navigate(['/login']);
+      this.loading = false;
     }
   }
 
@@ -55,7 +60,7 @@ export class UserDashboardComponent implements OnInit {
     cart.push(book);
     localStorage.setItem('cart', JSON.stringify(cart));
     setTimeout(() => {
-      this.toastService.showToast(`Book "${book.title}" added to cart`, 'success');
+      this.toastService.showToast(`"${book.title}" added to cart`, 'success');
     }, 150);
 }
 
@@ -64,7 +69,7 @@ export class UserDashboardComponent implements OnInit {
     cart = cart.filter((item: Book) => item.isbn !== book.isbn);
     localStorage.setItem('cart', JSON.stringify(cart));
     setTimeout(() => {
-      this.toastService.showToast(`Book "${book.title}" removed from cart`, 'success');
+      this.toastService.showToast(`"${book.title}" removed from cart`, 'success');
     }, 150);
   }
 

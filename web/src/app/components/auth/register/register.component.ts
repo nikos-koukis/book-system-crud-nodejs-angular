@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { ValidationService } from '../../../utils/validation.service'; // Import the validation service
-import { Router } from '@angular/router'; // Import Router for navigation
-
+import { ValidationService } from '../../../utils/validation.service';
+import { Router } from '@angular/router';
+import { ToastService } from '../../../utils/toast.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -18,7 +18,7 @@ export class RegisterComponent {
   validationErrors: string[] = []; // To hold validation errors
   serverError: string = ''; // Variable to hold server-side errors
 
-  constructor(private authService: AuthService, private validationService: ValidationService, private router: Router) {} // Inject Router
+  constructor(private authService: AuthService, private validationService: ValidationService, private router: Router, private toastService: ToastService) {}
 
   register(): void {
     const user = {
@@ -41,9 +41,10 @@ export class RegisterComponent {
     //Proceed with registration if there are no validation errors
     this.authService.register(user).subscribe(
       response => {
-        // Clear the form fields
         this.clearFormFields();
-        // Redirect to the login page
+        setTimeout(() => {
+          this.toastService.showToast('Registration successful. Please login.', 'success');
+        }, 150);
         this.router.navigate(['/login']);
       },
       error => {

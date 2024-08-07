@@ -72,6 +72,7 @@ export class MyOrdersComponent implements OnInit {
       this.apiService.getOrdersByUser(token, this.userID._id).subscribe(
         response => {
           this.orders = response.orders;
+          this.calculateOrderTotal(this.orders[0]);
           this.orders.forEach(order => {
             order.books = order.books.map(book => ({
               ...book,
@@ -85,6 +86,14 @@ export class MyOrdersComponent implements OnInit {
         }
       );
     }
+  }
+
+  calculateOrderTotal(order: Order): number {
+    let total = 0;
+    order.books.forEach(book => {
+      total += book.id.price * book.quantity;
+    });
+    return total;
   }
   
   openOrderDetailsModal(order: Order): void {

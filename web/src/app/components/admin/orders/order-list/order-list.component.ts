@@ -7,6 +7,7 @@ import { ToastService } from '../../../../utils/toast.service';
 interface Book {
   id: {
     title: string;
+    price: number;
   };
   quantity: number;
 }
@@ -38,6 +39,7 @@ export class OrderListComponent implements OnInit {
   orders: Order[] = []; // Array to hold orders
   serverError: string | null = null; // For error handling
   loading: boolean = true; // To track loading state
+  finalPrice: number = 0;
 
   constructor(private apiService: ApiService, private router: Router, private toastService: ToastService) {}
 
@@ -50,23 +52,32 @@ export class OrderListComponent implements OnInit {
   }
 
   getOrders(): void {
-    this.loading = true; // Set loading to true before the request
-    const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+    this.loading = true;
+    const token = localStorage.getItem('token');
     if (token) {
       this.apiService.getOrders(token).subscribe(
-        (response: OrdersResponse) => { // Specify the type of response
-          this.orders = response.orders; // Accessing orders property
-          this.loading = false; // Turn off loading
+        (response: OrdersResponse) => {
+          this.orders = response.orders;
+          this.calculateOrderTotal(this.orders[0]);
+          this.loading = false;
         },
         error => {
           this.serverError = error.error.message || 'An unexpected error occurred.';
-          this.loading = false; // Also turn off loading on error
+          this.loading = false;
         }
       );
     } else {
       this.serverError = 'User is not authenticated.';
-      this.loading = false; // Ensure loading is set to false if no token
+      this.loading = false;
     }
+  }
+
+  calculateOrderTotal(order: Order): number {
+    let total = 0;
+    order.books.forEach(book => {
+      total += book.id.price * book.quantity;
+    });
+    return total;
   }
 
   deleteOrder(orderId: string): void {

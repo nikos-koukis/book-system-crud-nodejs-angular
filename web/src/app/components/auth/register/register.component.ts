@@ -45,7 +45,7 @@ export class RegisterComponent {
         setTimeout(() => {
           this.toastService.showToast('Registration successful. Please login.', 'success');
         }, 150);
-        this.router.navigate(['/login']);
+        this.router.navigate(['/loginss']);
       },
       error => {
         this.serverError = error.error.message || 'An unexpected error occurred.';

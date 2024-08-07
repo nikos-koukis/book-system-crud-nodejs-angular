@@ -29,12 +29,18 @@ const upload = multer({ storage }); // Create multer instance
 // Create a new book
 router.post('/', authenticate, isAdmin, upload.single('image'), async (req, res) => {
   const { title, isbn, price, stock } = req.body;
-  const imagePath = req.file.path; // Get the image path from uploaded file
+  const imagePath = req.file.path;
+
   try {
-    const newBook = new Book({ title, isbn, price, stock, image: imagePath }); // Save the path of the uploaded image
+    const existingBook = await Book.findOne({ isbn });
+    
+    if (existingBook) {
+      return res.status(400).json({ message: 'ISBN already exists' });
+    }
+    const newBook = new Book({ title, isbn, price, stock, image: imagePath });
     await newBook.save();
 
-    res.status(201).json(newBook); // Respond with the created book
+    res.status(201).json(newBook);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }

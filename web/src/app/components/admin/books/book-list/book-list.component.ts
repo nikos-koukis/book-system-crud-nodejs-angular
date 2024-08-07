@@ -3,6 +3,7 @@ import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ToastService } from '../../../../utils/toast.service';
+
 @Component({
   selector: 'app-book-list',
   templateUrl: './book-list.component.html',
@@ -11,6 +12,7 @@ import { ToastService } from '../../../../utils/toast.service';
 export class BookListComponent implements OnInit {
   books: any[] = []; // Array to hold book data
   serverError: string = ''; // Variable to hold error messages
+  loading: boolean = true; // Loading state
 
   constructor(private apiService: ApiService, private router: Router, private toastService: ToastService) {}
 
@@ -23,19 +25,23 @@ export class BookListComponent implements OnInit {
   getBooks(): void {
     const token = localStorage.getItem('token');
     if (token) {
+      this.loading = true; // Start loading
       this.apiService.getBooks(token).subscribe(
         response => {
           this.books = response.map(book => ({
             ...book,
             image: `${this.apiUrl}/${book.image}`
           }));
+          this.loading = false; // Stop loading
         },
         error => {
           this.serverError = error.error.message || 'An unexpected error occurred.';
+          this.loading = false; // Stop loading
         }
       );
     } else {
       this.serverError = 'User is not authenticated.';
+      this.loading = false; // Stop loading
       this.router.navigate(['/login']);
     }
   }

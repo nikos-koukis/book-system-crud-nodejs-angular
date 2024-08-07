@@ -73,9 +73,12 @@ export class BookCreateComponent implements OnInit {
         },
         error => {
           setTimeout(() => {
-            this.toastService.showToast('Error at creating book!', 'danger'); // Show error toast
-            this.serverError = error.error.message || 'An unexpected error occurred.';
-          }, 150);
+            if(error.status == 400){
+              this.toastService.showToast('Isbn already exists', 'error');
+            }else{
+              this.toastService.showToast('Error at creating book!', 'error'); // Show error toast
+            }
+          }, 100);
         }
       );
     } else {

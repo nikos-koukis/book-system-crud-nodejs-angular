@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ValidationService } from '../../../utils/validation.service';
 import { Router } from '@angular/router';
-import { ToastService } from '../../../utils/toast.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -13,12 +12,12 @@ export class RegisterComponent {
   email: string = '';
   phone: string = '';
   password: string = '';
-  confirmPassword: string = ''; // New field for confirm password
+  confirmPassword: string = '';
   role: string = 'user';
-  validationErrors: string[] = []; // To hold validation errors
-  serverError: string = ''; // Variable to hold server-side errors
+  validationErrors: string[] = [];
+  serverError: string | null = null;
 
-  constructor(private authService: AuthService, private validationService: ValidationService, private router: Router, private toastService: ToastService) {}
+  constructor(private authService: AuthService, private validationService: ValidationService, private router: Router) {}
 
   register(): void {
     const user = {
@@ -41,11 +40,8 @@ export class RegisterComponent {
     //Proceed with registration if there are no validation errors
     this.authService.register(user).subscribe(
       response => {
-        this.clearFormFields();
-        setTimeout(() => {
-          this.toastService.showToast('Registration successful. Please login.', 'success');
-        }, 150);
         this.router.navigate(['/login']);
+        this.clearFormFields();
       },
       error => {
         this.serverError = error.error.message || 'An unexpected error occurred.';

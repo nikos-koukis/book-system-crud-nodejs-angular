@@ -35,6 +35,9 @@
             <li *ngFor="let error of validationErrors">{{ error }}</li>
           </ul>
         </div>
+        <div *ngIf="serverError" class="alert alert-danger">
+          {{ serverError }}
+        </div>
         <button type="submit" class="btn btn-primary">Register</button>
       </form>
     </div>

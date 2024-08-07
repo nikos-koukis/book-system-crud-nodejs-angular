@@ -8,11 +8,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./customer-list.component.css']
 })
 export class CustomerListComponent implements OnInit {
-  customers: any[] = []; // Array to hold customer data
-  serverError: string = ''; // Variable to hold error messages
-  editingCustomerId: string | null = null; // Variable to keep track of which customer is being edited
-  updatedCustomer: any = {}; // Object to hold updated customer info
-  isLoading: boolean = false; // Variable to track loading state
+  customers: any[] = [];
+  serverError: string = '';
+  editingCustomerId: string | null = null;
+  updatedCustomer: any = {};
+  isLoading: boolean = false;
+  orderCounts: { [key: string]: number } = {};
+  totalPrices: { [key: string]: number } = {};
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -21,20 +23,48 @@ export class CustomerListComponent implements OnInit {
   }
 
   getCustomers(): void {
-    const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+    const token = localStorage.getItem('token');
     if (token) {
-      this.isLoading = true; // Start loading
+      this.isLoading = true;
       this.apiService.getCustomers(token).subscribe(
         response => {
-          this.customers = response; // Assuming the response returns an array of customers
-          this.isLoading = false; // Stop loading on success
+          this.customers = response;
+          this.isLoading = false;
+          this.getOrderCounts(response, token);
+          this.getTotalPrices(response, token);
         },
         error => {
-          this.isLoading = false; // Stop loading on error
+          this.isLoading = false;
         }
       );
     } else {
-      this.router.navigate(['/login']); // Redirect to login if not authenticated
+      this.router.navigate(['/login']);
     }
+  }
+
+  getOrderCounts(customers: any[], token: string): void {
+    customers.forEach(customer => {
+      if (customer._id) {
+        this.apiService.getOrderCountByUserId(customer._id, token).subscribe(
+          response => {
+            this.orderCounts[customer._id] = response.orderCount;
+          }
+        );
+      }
+    });
+  }
+
+  getTotalPrices(customers: any[], token: string): void {
+    customers.forEach(customer => {
+      if (customer._id) {
+        console.log(customer._id)
+        this.apiService.getTotalPriceByUserId(customer._id, token).subscribe(
+          response => {
+            console.log(response)
+            this.totalPrices[customer._id] = response.totalPrice;
+          }
+        );
+      }
+    });
   }
 }

@@ -105,4 +105,14 @@ export class ApiService {
     return this.http.get<any>(`${this.apiUrl}/order/orders/${userID}`, { headers });
   }
 
+  getOrderCountByUserId(userID: string, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/statistics/orders/count/${userID}`, { headers });
+  }
+
+  getTotalPriceByUserId(userID: string, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/statistics/total_price/${userID}`, { headers });
+  }
+
 }

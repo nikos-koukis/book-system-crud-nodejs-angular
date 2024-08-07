@@ -16,17 +16,23 @@
     No customers available.
   </div>
 
-  <table class="table table-striped" *ngIf="!isLoading && customers.length > 0">
+  <table class="table table-striped mt-5" *ngIf="!isLoading && customers.length > 0">
     <thead>
       <tr>
         <th>Name</th>
         <th>Email</th>
+        <th>Phone</th>
+        <th>Total Orders</th>
+        <th>Total Amount</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let customer of customers">
-        <td *ngIf="editingCustomerId !== customer._id">{{ customer.username }}</td>
-        <td *ngIf="editingCustomerId !== customer._id">{{ customer.email }}</td>
+        <td>{{ customer.username }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.phone }}</td>
+        <td>{{ orderCounts[customer._id] || 0 }}</td>
+        <td>{{ totalPrices[customer._id] || 0 | currency:'EUR' }}</td>
       </tr>
     </tbody>
   </table>

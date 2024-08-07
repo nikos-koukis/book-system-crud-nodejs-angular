@@ -101,7 +101,7 @@ export class BookEditComponent implements OnInit {
         },
         error => {
           setTimeout(() => {
-            this.toastService.showToast('Error at updating book!', 'danger'); // Show error toast
+            this.toastService.showToast('Error at updating book!', 'error'); // Show error toast
           }, 150);
         }
       );

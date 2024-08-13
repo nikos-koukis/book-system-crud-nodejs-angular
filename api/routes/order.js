@@ -15,9 +15,8 @@ const isAdmin = (req, res, next) => {
 
 router.get('/', authenticate, isAdmin, async (req, res) => {
     try {
-        const orders = await Order.find().populate('user.id').populate('books.id');
+        const orders = await Order.find().sort({ createdAt: -1 }).populate('user.id').populate('books.id');
 
-        // Respond with the list of orders
         res.status(200).json({ orders });
     } catch (error) {
         res.status(500).json({ error: 'Error retrieving orders', details: error.message });
@@ -206,6 +205,7 @@ router.get('/orders/:userId', authenticate, async (req, res) => {
     try {
         // Find all orders associated with the specified userId
         const orders = await Order.find({ 'user.id': userId })
+            .sort({ createdAt: -1 }) 
             .populate('user.id')
             .populate('books.id');
 

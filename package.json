@@ -7,7 +7,7 @@
     "scripts": {
       "dev": "cd web && npm start & cd api && npm start",
       "start": "cd api/built && node server.js",
-      "prebuild": "cd api && npm run build",
-      "build": "cd web && npm run build"
+      "prebuild": "cd api && npm run build --force",
+      "build": "cd web && npm run build --force"
     }
   }

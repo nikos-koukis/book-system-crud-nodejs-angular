@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://api-nodejs-angular-alpha.vercel.app'
+    apiUrl: 'https://book-system-crud-api.onrender.com/'
   };

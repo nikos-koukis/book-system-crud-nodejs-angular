@@ -1,0 +1,13 @@
+{
+    "name": "nodejs-angular",
+    "version": "1.0.0",
+    "engines": {
+      "node": ">=18"
+    },
+    "scripts": {
+      "dev": "cd web && npm start & cd api && npm start",
+      "start": "cd api/built && node server.js",
+      "prebuild": "cd api && npm run build",
+      "build": "cd web && npm run build"
+    }
+  }
